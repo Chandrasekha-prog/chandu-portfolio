@@ -213,26 +213,6 @@
             margin-right: 0.5rem;
         }
 
-        .photo-upload {
-            text-align: center;
-            margin-top: 1rem;
-            padding: 1rem;
-            background: var(--light);
-            border-radius: 10px;
-        }
-
-        .upload-btn {
-            display: inline-block;
-            padding: 0.5rem 1rem;
-            background: var(--accent);
-            color: white;
-            border: none;
-            border-radius: 5px;
-            cursor: pointer;
-            font-size: 0.9rem;
-            margin-top: 0.5rem;
-        }
-
         footer {
             text-align: center;
             margin-top: 3rem;
@@ -257,7 +237,7 @@
         <div class="container">
             <div class="profile-img">
                 <!-- Replace the src with your actual photo path -->
-                <img src="IMG-20250222-WA0055.png" alt="Telugu Chandra Sekhar" id="profile-picture">
+                <img src="C:\Users\T.Samba Sivudu\Downloads\IMG-20250222-WA0055.png" alt="Telugu Chandra Sekhar" id="profile-picture">
                 <div class="placeholder" id="profile-placeholder" style="display: none;">
                     <i class="fas fa-user"></i>
                 </div>
@@ -319,13 +299,6 @@
                         <li>Python Foundation</li>
                         <li>Infosys Certified</li>
                     </ul>
-                </div>
-                
-                <div class="photo-upload">
-                    <h3>Update Profile Photo</h3>
-                    <p>Add your own photo to personalize your portfolio</p>
-                    <input type="file" id="photo-upload" accept="image/*" style="display: none;">
-                    <button class="upload-btn" id="upload-trigger"><i class="fas fa-upload"></i> Choose Photo</button>
                 </div>
             </div>
 
@@ -394,25 +367,6 @@
     </footer>
 
     <script>
-        // Photo upload functionality
-        document.getElementById('upload-trigger').addEventListener('click', function() {
-            document.getElementById('photo-upload').click();
-        });
-
-        document.getElementById('photo-upload').addEventListener('change', function(e) {
-            if (e.target.files && e.target.files[0]) {
-                const reader = new FileReader();
-                
-                reader.onload = function(e) {
-                    document.getElementById('profile-picture').src = e.target.result;
-                    document.getElementById('profile-picture').style.display = 'block';
-                    document.getElementById('profile-placeholder').style.display = 'none';
-                }
-                
-                reader.readAsDataURL(e.target.files[0]);
-            }
-        });
-
         // Check if profile image loads successfully
         document.getElementById('profile-picture').onerror = function() {
             this.style.display = 'none';
@@ -489,5 +443,4 @@ Certifications:
         });
     </script>
 </body>
-
 </html>

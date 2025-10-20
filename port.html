@@ -1,0 +1,492 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Telugu Chandra Sekhar - Portfolio</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
+    <style>
+        :root {
+            --primary: #2c3e50;
+            --secondary: #3498db;
+            --accent: #e74c3c;
+            --light: #ecf0f1;
+            --dark: #2c3e50;
+            --shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        body {
+            background-color: #f5f7fa;
+            color: #333;
+            line-height: 1.6;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        header {
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            color: white;
+            padding: 2rem 0;
+            text-align: center;
+            border-radius: 0 0 20px 20px;
+            box-shadow: var(--shadow);
+            margin-bottom: 2rem;
+        }
+
+        .profile-img {
+            width: 150px;
+            height: 150px;
+            border-radius: 50%;
+            border: 5px solid white;
+            margin: 0 auto 1rem;
+            background-color: #fff;
+            overflow: hidden;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .profile-img img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .profile-img .placeholder {
+            font-size: 4rem;
+            color: var(--secondary);
+        }
+
+        h1 {
+            font-size: 2.5rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .tagline {
+            font-size: 1.2rem;
+            opacity: 0.9;
+        }
+
+        .contact-info {
+            display: flex;
+            justify-content: center;
+            flex-wrap: wrap;
+            gap: 1rem;
+            margin-top: 1rem;
+        }
+
+        .contact-item {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .dashboard {
+            display: grid;
+            grid-template-columns: 1fr 2fr;
+            gap: 2rem;
+        }
+
+        .sidebar {
+            background: white;
+            border-radius: 10px;
+            padding: 1.5rem;
+            box-shadow: var(--shadow);
+        }
+
+        .main-content {
+            display: flex;
+            flex-direction: column;
+            gap: 2rem;
+        }
+
+        .card {
+            background: white;
+            border-radius: 10px;
+            padding: 1.5rem;
+            box-shadow: var(--shadow);
+        }
+
+        h2 {
+            color: var(--primary);
+            margin-bottom: 1rem;
+            padding-bottom: 0.5rem;
+            border-bottom: 2px solid var(--light);
+        }
+
+        h3 {
+            color: var(--secondary);
+            margin: 1rem 0 0.5rem;
+        }
+
+        .timeline {
+            position: relative;
+            padding-left: 2rem;
+        }
+
+        .timeline::before {
+            content: '';
+            position: absolute;
+            left: 7px;
+            top: 0;
+            bottom: 0;
+            width: 2px;
+            background: var(--secondary);
+        }
+
+        .timeline-item {
+            position: relative;
+            margin-bottom: 1.5rem;
+        }
+
+        .timeline-item::before {
+            content: '';
+            position: absolute;
+            left: -2rem;
+            top: 5px;
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+            background: var(--accent);
+        }
+
+        .date {
+            color: var(--accent);
+            font-weight: bold;
+            font-size: 0.9rem;
+        }
+
+        .skills {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.5rem;
+            margin-top: 1rem;
+        }
+
+        .skill {
+            background: var(--light);
+            padding: 0.5rem 1rem;
+            border-radius: 20px;
+            font-size: 0.9rem;
+        }
+
+        .download-section {
+            text-align: center;
+            margin-top: 2rem;
+            padding: 2rem;
+            background: white;
+            border-radius: 10px;
+            box-shadow: var(--shadow);
+        }
+
+        .btn {
+            display: inline-block;
+            padding: 0.8rem 1.5rem;
+            background: var(--secondary);
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 1rem;
+            transition: all 0.3s ease;
+            margin: 0 0.5rem;
+        }
+
+        .btn:hover {
+            background: var(--primary);
+            transform: translateY(-3px);
+        }
+
+        .btn i {
+            margin-right: 0.5rem;
+        }
+
+        .photo-upload {
+            text-align: center;
+            margin-top: 1rem;
+            padding: 1rem;
+            background: var(--light);
+            border-radius: 10px;
+        }
+
+        .upload-btn {
+            display: inline-block;
+            padding: 0.5rem 1rem;
+            background: var(--accent);
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 0.9rem;
+            margin-top: 0.5rem;
+        }
+
+        footer {
+            text-align: center;
+            margin-top: 3rem;
+            padding: 1rem;
+            color: #777;
+        }
+
+        @media (max-width: 768px) {
+            .dashboard {
+                grid-template-columns: 1fr;
+            }
+            
+            .contact-info {
+                flex-direction: column;
+                align-items: center;
+            }
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <div class="container">
+            <div class="profile-img">
+                <!-- Replace the src with your actual photo path -->
+                <img src="C:\Users\T.Samba Sivudu\Downloads\IMG-20250222-WA0055.png" alt="Telugu Chandra Sekhar" id="profile-picture">
+                <div class="placeholder" id="profile-placeholder" style="display: none;">
+                    <i class="fas fa-user"></i>
+                </div>
+            </div>
+            <h1>TELUGU CHANDRA SEKHAR</h1>
+            <p class="tagline">Software Engineering | Data Science | Project Management</p>
+            <div class="contact-info">
+                <div class="contact-item">
+                    <i class="fas fa-map-marker-alt"></i>
+                    <span>Gokavaram(v), Kothapalli(m), Kurnool(Dist)</span>
+                </div>
+                <div class="contact-item">
+                    <i class="fas fa-phone"></i>
+                    <span>+91-6305412922</span>
+                </div>
+                <div class="contact-item">
+                    <i class="fas fa-envelope"></i>
+                    <span>teluguchandrasekhar04@gmail.com</span>
+                </div>
+                <div class="contact-item">
+                    <i class="fas fa-globe"></i>
+                    <span>www.teluguchandrasekhar.com</span>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <div class="container">
+        <div class="dashboard">
+            <div class="sidebar">
+                <div class="card">
+                    <h2>Summary</h2>
+                    <p>Results-oriented Software Engineering with a proven track record of optimizing project outcomes. Skilled in strategic project management and team leadership. Seeking a challenging executive role to leverage technical expertise and drive engineering excellence.</p>
+                </div>
+
+                <div class="card">
+                    <h2>Technical Skills</h2>
+                    <div class="skills">
+                        <span class="skill">Programming in C</span>
+                        <span class="skill">Java</span>
+                        <span class="skill">Python</span>
+                        <span class="skill">Communication</span>
+                        <span class="skill">Time-Management</span>
+                    </div>
+                </div>
+
+                <div class="card">
+                    <h2>Languages</h2>
+                    <div class="skills">
+                        <span class="skill">English</span>
+                        <span class="skill">Telugu</span>
+                    </div>
+                </div>
+
+                <div class="card">
+                    <h2>Certifications</h2>
+                    <ul>
+                        <li>C Programming</li>
+                        <li>Python Foundation</li>
+                        <li>Infosys Certified</li>
+                    </ul>
+                </div>
+                
+                <div class="photo-upload">
+                    <h3>Update Profile Photo</h3>
+                    <p>Add your own photo to personalize your portfolio</p>
+                    <input type="file" id="photo-upload" accept="image/*" style="display: none;">
+                    <button class="upload-btn" id="upload-trigger"><i class="fas fa-upload"></i> Choose Photo</button>
+                </div>
+            </div>
+
+            <div class="main-content">
+                <div class="card">
+                    <h2>Work Experience</h2>
+                    <div class="timeline">
+                        <div class="timeline-item">
+                            <div class="date">Jul 2024 – Present</div>
+                            <h3>Upstricks Intern</h3>
+                            <ul>
+                                <li>Developed Python-based solutions for various projects.</li>
+                                <li>Participated in hackathons, contributing to innovative software development.</li>
+                                <li>Collaborated with teams to design and implement efficient code.</li>
+                            </ul>
+                        </div>
+                        <div class="timeline-item">
+                            <div class="date">Oct 2024</div>
+                            <h3>Power BI Intern, Cognifyz</h3>
+                            <ul>
+                                <li>Implemented cost-effective solutions, resulting in a 20% reduction in project expenses.</li>
+                                <li>Streamlined project workflows, enhancing overall efficiency.</li>
+                                <li>Immersive knowledge proved at industry level.</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="card">
+                    <h2>Education</h2>
+                    <div class="timeline">
+                        <div class="timeline-item">
+                            <div class="date">Jun 2024 – Sep 2028</div>
+                            <h3>NRI Institute of Technology, Vijayawada</h3>
+                            <ul>
+                                <li>Autonomous Engineering Institution.</li>
+                                <li>Specialization in Data Science.</li>
+                                <li>Learning about driven data condition and techniques.</li>
+                            </ul>
+                        </div>
+                        <div class="timeline-item">
+                            <div class="date">Aug 2022 – Aug 2024</div>
+                            <h3>Narayana Junior College</h3>
+                            <ul>
+                                <li>Kurnool (District), Andhra Pradesh.</li>
+                                <li>Completed M.P.C Course.</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="download-section" id="resume-content">
+            <h2>Download Resume</h2>
+            <p>Download my resume in PDF or DOC format for your convenience.</p>
+            <button class="btn" id="download-pdf"><i class="fas fa-file-pdf"></i> Download PDF</button>
+            <button class="btn" id="download-doc"><i class="fas fa-file-word"></i> Download DOC</button>
+        </div>
+    </div>
+
+    <footer>
+        <div class="container">
+            <p>&copy; 2024 Telugu Chandra Sekhar. All rights reserved.</p>
+        </div>
+    </footer>
+
+    <script>
+        // Photo upload functionality
+        document.getElementById('upload-trigger').addEventListener('click', function() {
+            document.getElementById('photo-upload').click();
+        });
+
+        document.getElementById('photo-upload').addEventListener('change', function(e) {
+            if (e.target.files && e.target.files[0]) {
+                const reader = new FileReader();
+                
+                reader.onload = function(e) {
+                    document.getElementById('profile-picture').src = e.target.result;
+                    document.getElementById('profile-picture').style.display = 'block';
+                    document.getElementById('profile-placeholder').style.display = 'none';
+                }
+                
+                reader.readAsDataURL(e.target.files[0]);
+            }
+        });
+
+        // Check if profile image loads successfully
+        document.getElementById('profile-picture').onerror = function() {
+            this.style.display = 'none';
+            document.getElementById('profile-placeholder').style.display = 'flex';
+        };
+
+        // Resume download functionality
+        document.getElementById('download-pdf').addEventListener('click', function() {
+            const element = document.getElementById('resume-content');
+            const opt = {
+                margin: 1,
+                filename: 'Telugu_Chandra_Sekhar_Resume.pdf',
+                image: { type: 'jpeg', quality: 0.98 },
+                html2canvas: { scale: 2 },
+                jsPDF: { unit: 'in', format: 'letter', orientation: 'portrait' }
+            };
+            
+            html2pdf().set(opt).from(element).save();
+        });
+
+        document.getElementById('download-doc').addEventListener('click', function() {
+            // Create a simple text version for DOC download
+            const content = `
+TELUGU CHANDRA SEKHAR
+Gokavaram(v), Kothapalli(m), Kurnool(Dist) • +91-6305412922 • teluguchandrasekhar04@gmail.com • www.teluguchandrasekhar.com
+
+SUMMARY
+Results-oriented Software Engineering with a proven track record of optimizing project outcomes.
+Skilled in strategic project management and team leadership. Seeking a challenging executive role to
+leverage technical expertise and drive engineering excellence.
+
+WORK EXPERIENCE
+
+Upstricks Intern Jul 2024–present
+- Developed Python-based solutions for various projects.
+- Participated in hackathons, contributing to innovative software development.
+- Collaborated with teams to design and implement efficient code.
+
+Power BI Intern, Cognifyz Oct 2024
+- Implemented cost-effective solutions, resulting in a 20% reduction in project expenses.
+- Streamlined project workflows, enhancing overall efficiency.
+- Immersive knowledge proved at industry level.
+
+EDUCATION
+
+NRI Institute of Technology, Vijayawada Jun 2024 – Sep 2028
+- Autonomous Engineering Institution.
+- Specialization in Data Science.
+- Learning about driven data condition and techniques.
+
+Narayana Junior College Aug 2022 – Aug 2024
+- Kurnool (District), Andhra Pradesh.
+- Completed M.P.C Course.
+
+ADDITIONAL INFORMATION
+
+Technical Skills: Programming in C, Java, Python, Communication, Time-Management.
+Languages: English, Telugu
+Certifications:
+• C Programming
+• Python Foundation
+• Infosys Certified
+            `;
+            
+            const blob = new Blob([content], { type: 'application/msword' });
+            const url = URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = 'Telugu_Chandra_Sekhar_Resume.doc';
+            document.body.appendChild(a);
+            a.click();
+            document.body.removeChild(a);
+            URL.revokeObjectURL(url);
+        });
+    </script>
+</body>
+</html>

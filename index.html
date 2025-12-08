@@ -3,447 +3,1221 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Telugu Chandra Sekhar - Portfolio</title>
+    <title>Telugu Chandra Sekhar | Interactive Portfolio</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&family=Montserrat:wght@800;900&display=swap" rel="stylesheet">
     <style>
         :root {
-            --primary: #2c3e50;
-            --secondary: #3498db;
-            --accent: #e74c3c;
-            --light: #ecf0f1;
-            --dark: #2c3e50;
-            --shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            --primary: #6C63FF;
+            --primary-dark: #554fd8;
+            --secondary: #FF6584;
+            --dark: #2A2D43;
+            --light: #F5F5F7;
+            --gray: #8A8DAA;
+            --success: #4CAF50;
+            --transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
+            --shadow: 0 10px 30px rgba(0, 0, 0, 0.08);
+            --shadow-hover: 0 15px 40px rgba(0, 0, 0, 0.12);
         }
-
         * {
             margin: 0;
             padding: 0;
             box-sizing: border-box;
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
         }
-
+        html {
+            scroll-behavior: smooth;
+        }
         body {
-            background-color: #f5f7fa;
-            color: #333;
+            font-family: 'Poppins', sans-serif;
+            background-color: var(--light);
+            color: var(--dark);
             line-height: 1.6;
+            overflow-x: hidden;
         }
-
+        h1, h2, h3, h4 {
+            font-family: 'Montserrat', sans-serif;
+            font-weight: 800;
+        }
         .container {
+            width: 90%;
             max-width: 1200px;
             margin: 0 auto;
-            padding: 20px;
+            padding: 0 20px;
         }
-
+        section {
+            padding: 100px 0;
+        }
+        /* Header & Navigation */
         header {
-            background: linear-gradient(135deg, var(--primary), var(--secondary));
-            color: white;
-            padding: 2rem 0;
-            text-align: center;
-            border-radius: 0 0 20px 20px;
-            box-shadow: var(--shadow);
-            margin-bottom: 2rem;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            z-index: 1000;
+            background-color: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            box-shadow: 0 5px 20px rgba(0, 0, 0, 0.05);
+            transition: var(--transition);
         }
-
-        .profile-img {
-            width: 150px;
-            height: 150px;
-            border-radius: 50%;
-            border: 5px solid white;
-            margin: 0 auto 1rem;
-            background-color: #fff;
-            overflow: hidden;
+        nav {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 20px 0;
+        }
+        .logo {
+            font-size: 1.8rem;
+            font-weight: 900;
+            color: var(--primary);
+            text-decoration: none;
+        }
+        .logo span {
+            color: var(--secondary);
+        }
+        .nav-links {
+            display: flex;
+            list-style: none;
+        }
+        .nav-links li {
+            margin-left: 30px;
+        }
+        .nav-links a {
+            text-decoration: none;
+            color: var(--dark);
+            font-weight: 500;
+            font-size: 1rem;
+            position: relative;
+            padding: 5px 0;
+            transition: var(--transition);
+        }
+        .nav-links a:hover {
+            color: var(--primary);
+        }
+        .nav-links a::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 0;
+            height: 2px;
+            background-color: var(--primary);
+            transition: var(--transition);
+        }
+        .nav-links a:hover::after {
+            width: 100%;
+        }
+        .mobile-toggle {
+            display: none;
+            font-size: 1.5rem;
+            cursor: pointer;
+            color: var(--dark);
+        }
+        /* Hero Section */
+        .hero {
+            height: 100vh;
             display: flex;
             align-items: center;
-            justify-content: center;
+            position: relative;
+            overflow: hidden;
+            background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
         }
-
-        .profile-img img {
+        .hero-content {
+            max-width: 700px;
+            z-index: 2;
+        }
+        .hero h1 {
+            font-size: 4rem;
+            line-height: 1.1;
+            margin-bottom: 20px;
+            background: linear-gradient(90deg, var(--primary), var(--secondary));
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+            opacity: 0;
+            animation: fadeUp 0.8s 0.2s forwards;
+        }
+        .hero p {
+            font-size: 1.3rem;
+            color: var(--gray);
+            margin-bottom: 30px;
+            opacity: 0;
+            animation: fadeUp 0.8s 0.4s forwards;
+        }
+        .hero-btns {
+            display: flex;
+            gap: 20px;
+            opacity: 0;
+            animation: fadeUp 0.8s 0.6s forwards;
+        }
+        .btn {
+            padding: 14px 32px;
+            border-radius: 50px;
+            font-weight: 600;
+            font-size: 1rem;
+            text-decoration: none;
+            display: inline-block;
+            transition: var(--transition);
+            cursor: pointer;
+            border: none;
+            font-family: 'Poppins', sans-serif;
+        }
+        .btn-primary {
+            background-color: var(--primary);
+            color: white;
+            box-shadow: var(--shadow);
+        }
+        .btn-primary:hover {
+            background-color: var(--primary-dark);
+            transform: translateY(-5px);
+            box-shadow: var(--shadow-hover);
+        }
+        .btn-secondary {
+            background-color: transparent;
+            color: var(--primary);
+            border: 2px solid var(--primary);
+        }
+        .btn-secondary:hover {
+            background-color: rgba(108, 99, 255, 0.1);
+            transform: translateY(-5px);
+        }
+        /* Floating elements */
+        .floating-elements {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            top: 0;
+            left: 0;
+            overflow: hidden;
+            z-index: 1;
+        }
+        .floating-element {
+            position: absolute;
+            border-radius: 50%;
+            background: rgba(108, 99, 255, 0.1);
+            animation: float 6s infinite ease-in-out;
+        }
+        .floating-element:nth-child(1) {
+            width: 80px;
+            height: 80px;
+            top: 20%;
+            right: 10%;
+            animation-delay: 0s;
+        }
+        .floating-element:nth-child(2) {
+            width: 120px;
+            height: 120px;
+            bottom: 20%;
+            right: 15%;
+            animation-delay: 2s;
+        }
+        .floating-element:nth-child(3) {
+            width: 60px;
+            height: 60px;
+            top: 40%;
+            right: 25%;
+            animation-delay: 4s;
+        }
+        /* Section Titles */
+        .section-title {
+            text-align: center;
+            margin-bottom: 60px;
+        }
+        .section-title h2 {
+            font-size: 2.8rem;
+            color: var(--dark);
+            margin-bottom: 15px;
+            position: relative;
+            display: inline-block;
+        }
+        .section-title h2::after {
+            content: '';
+            position: absolute;
+            bottom: -10px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 70px;
+            height: 4px;
+            background-color: var(--primary);
+            border-radius: 2px;
+        }
+        .section-title p {
+            color: var(--gray);
+            max-width: 600px;
+            margin: 0 auto;
+        }
+        /* About Section */
+        .about-content {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 50px;
+            align-items: center;
+        }
+        .about-img {
+            position: relative;
+        }
+        .about-img img {
+            width: 100%;
+            border-radius: 20px;
+            box-shadow: var(--shadow);
+            transition: var(--transition);
+        }
+        .about-img:hover img {
+            transform: translateY(-10px);
+            box-shadow: var(--shadow-hover);
+        }
+        .about-text h3 {
+            font-size: 2rem;
+            margin-bottom: 20px;
+            color: var(--dark);
+        }
+        .about-text p {
+            margin-bottom: 25px;
+            color: var(--gray);
+        }
+        .skills-container {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 20px;
+            margin-top: 30px;
+        }
+        .skill-item {
+            background-color: white;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: var(--shadow);
+            transition: var(--transition);
+            cursor: pointer;
+        }
+        .skill-item:hover {
+            transform: translateY(-5px);
+            box-shadow: var(--shadow-hover);
+        }
+        .skill-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 10px;
+        }
+        .skill-name {
+            font-weight: 600;
+            color: var(--dark);
+        }
+        .skill-percent {
+            color: var(--primary);
+            font-weight: 600;
+        }
+        .skill-bar {
+            height: 8px;
+            background-color: #eee;
+            border-radius: 4px;
+            overflow: hidden;
+        }
+        .skill-progress {
+            height: 100%;
+            background-color: var(--primary);
+            border-radius: 4px;
+            width: 0;
+            transition: width 1.5s ease;
+        }
+        /* Projects Section */
+        .projects-container {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
+            gap: 30px;
+        }
+        .project-card {
+            background-color: white;
+            border-radius: 15px;
+            overflow: hidden;
+            box-shadow: var(--shadow);
+            transition: var(--transition);
+            position: relative;
+        }
+        .project-card:hover {
+            transform: translateY(-10px);
+            box-shadow: var(--shadow-hover);
+        }
+        .project-img {
+            height: 220px;
+            width: 100%;
+            overflow: hidden;
+        }
+        .project-img img {
             width: 100%;
             height: 100%;
             object-fit: cover;
+            transition: var(--transition);
         }
-
-        .profile-img .placeholder {
-            font-size: 4rem;
-            color: var(--secondary);
+        .project-card:hover .project-img img {
+            transform: scale(1.05);
         }
-
-        h1 {
-            font-size: 2.5rem;
-            margin-bottom: 0.5rem;
+        .project-content {
+            padding: 25px;
         }
-
-        .tagline {
-            font-size: 1.2rem;
-            opacity: 0.9;
+        .project-content h3 {
+            font-size: 1.5rem;
+            margin-bottom: 10px;
+            color: var(--dark);
         }
-
-        .contact-info {
+        .project-content p {
+            color: var(--gray);
+            margin-bottom: 20px;
+            font-size: 0.95rem;
+        }
+        .project-tech {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+            margin-bottom: 20px;
+        }
+        .tech-tag {
+            background-color: rgba(108, 99, 255, 0.1);
+            color: var(--primary);
+            padding: 5px 12px;
+            border-radius: 20px;
+            font-size: 0.85rem;
+            font-weight: 500;
+        }
+        .project-links {
+            display: flex;
+            justify-content: space-between;
+        }
+        .project-link {
+            color: var(--primary);
+            text-decoration: none;
+            font-weight: 600;
+            display: flex;
+            align-items: center;
+            gap: 5px;
+            transition: var(--transition);
+        }
+        .project-link:hover {
+            color: var(--primary-dark);
+        }
+        /* Chat Interface */
+        .chat-container {
+            position: fixed;
+            bottom: 30px;
+            right: 30px;
+            z-index: 1000;
+        }
+        .chat-toggle {
+            width: 60px;
+            height: 60px;
+            border-radius: 50%;
+            background-color: var(--primary);
+            color: white;
             display: flex;
             justify-content: center;
-            flex-wrap: wrap;
-            gap: 1rem;
-            margin-top: 1rem;
+            align-items: center;
+            font-size: 1.5rem;
+            cursor: pointer;
+            box-shadow: 0 5px 20px rgba(108, 99, 255, 0.3);
+            transition: var(--transition);
+            border: none;
         }
-
+        .chat-toggle:hover {
+            background-color: var(--primary-dark);
+            transform: scale(1.1);
+        }
+        .chat-window {
+            position: absolute;
+            bottom: 80px;
+            right: 0;
+            width: 350px;
+            height: 500px;
+            background-color: white;
+            border-radius: 15px;
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.15);
+            display: none;
+            flex-direction: column;
+            overflow: hidden;
+            transition: var(--transition);
+        }
+        .chat-window.active {
+            display: flex;
+        }
+        .chat-header {
+            background-color: var(--primary);
+            color: white;
+            padding: 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        .chat-header h3 {
+            font-size: 1.2rem;
+        }
+        .close-chat {
+            background: none;
+            border: none;
+            color: white;
+            font-size: 1.2rem;
+            cursor: pointer;
+        }
+        .chat-body {
+            flex: 1;
+            padding: 20px;
+            overflow-y: auto;
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+        }
+        .chat-message {
+            max-width: 80%;
+            padding: 12px 16px;
+            border-radius: 18px;
+            line-height: 1.4;
+        }
+        .bot-message {
+            background-color: #f0f0f0;
+            align-self: flex-start;
+            border-bottom-left-radius: 5px;
+        }
+        .user-message {
+            background-color: var(--primary);
+            color: white;
+            align-self: flex-end;
+            border-bottom-right-radius: 5px;
+        }
+        .chat-input-container {
+            padding: 20px;
+            border-top: 1px solid #eee;
+            display: flex;
+            gap: 10px;
+        }
+        .chat-input {
+            flex: 1;
+            padding: 12px 18px;
+            border: 1px solid #ddd;
+            border-radius: 50px;
+            font-family: 'Poppins', sans-serif;
+            outline: none;
+            transition: var(--transition);
+        }
+        .chat-input:focus {
+            border-color: var(--primary);
+        }
+        .send-btn {
+            width: 45px;
+            height: 45px;
+            border-radius: 50%;
+            background-color: var(--primary);
+            color: white;
+            border: none;
+            cursor: pointer;
+            transition: var(--transition);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+        .send-btn:hover {
+            background-color: var(--primary-dark);
+        }
+        .quick-questions {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+            margin-top: 10px;
+        }
+        .quick-question {
+            background-color: rgba(108, 99, 255, 0.1);
+            color: var(--primary);
+            border: none;
+            padding: 8px 15px;
+            border-radius: 20px;
+            font-size: 0.85rem;
+            cursor: pointer;
+            transition: var(--transition);
+        }
+        .quick-question:hover {
+            background-color: rgba(108, 99, 255, 0.2);
+        }
+        /* Contact Form */
+        .contact-container {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 50px;
+            align-items: start;
+        }
+        .contact-info {
+            display: flex;
+            flex-direction: column;
+            gap: 25px;
+        }
         .contact-item {
             display: flex;
             align-items: center;
-            gap: 0.5rem;
+            gap: 15px;
         }
-
-        .dashboard {
-            display: grid;
-            grid-template-columns: 1fr 2fr;
-            gap: 2rem;
-        }
-
-        .sidebar {
-            background: white;
-            border-radius: 10px;
-            padding: 1.5rem;
-            box-shadow: var(--shadow);
-        }
-
-        .main-content {
-            display: flex;
-            flex-direction: column;
-            gap: 2rem;
-        }
-
-        .card {
-            background: white;
-            border-radius: 10px;
-            padding: 1.5rem;
-            box-shadow: var(--shadow);
-        }
-
-        h2 {
-            color: var(--primary);
-            margin-bottom: 1rem;
-            padding-bottom: 0.5rem;
-            border-bottom: 2px solid var(--light);
-        }
-
-        h3 {
-            color: var(--secondary);
-            margin: 1rem 0 0.5rem;
-        }
-
-        .timeline {
-            position: relative;
-            padding-left: 2rem;
-        }
-
-        .timeline::before {
-            content: '';
-            position: absolute;
-            left: 7px;
-            top: 0;
-            bottom: 0;
-            width: 2px;
-            background: var(--secondary);
-        }
-
-        .timeline-item {
-            position: relative;
-            margin-bottom: 1.5rem;
-        }
-
-        .timeline-item::before {
-            content: '';
-            position: absolute;
-            left: -2rem;
-            top: 5px;
-            width: 12px;
-            height: 12px;
+        .contact-icon {
+            width: 50px;
+            height: 50px;
             border-radius: 50%;
-            background: var(--accent);
-        }
-
-        .date {
-            color: var(--accent);
-            font-weight: bold;
-            font-size: 0.9rem;
-        }
-
-        .skills {
+            background-color: rgba(108, 99, 255, 0.1);
+            color: var(--primary);
             display: flex;
-            flex-wrap: wrap;
-            gap: 0.5rem;
-            margin-top: 1rem;
+            justify-content: center;
+            align-items: center;
+            font-size: 1.2rem;
         }
-
-        .skill {
-            background: var(--light);
-            padding: 0.5rem 1rem;
-            border-radius: 20px;
-            font-size: 0.9rem;
+        .contact-text h4 {
+            font-size: 1.2rem;
+            margin-bottom: 5px;
         }
-
-        .download-section {
-            text-align: center;
-            margin-top: 2rem;
-            padding: 2rem;
-            background: white;
-            border-radius: 10px;
+        .contact-text p {
+            color: var(--gray);
+        }
+        .contact-form {
+            background-color: white;
+            padding: 40px;
+            border-radius: 15px;
             box-shadow: var(--shadow);
         }
-
-        .btn {
-            display: inline-block;
-            padding: 0.8rem 1.5rem;
-            background: var(--secondary);
-            color: white;
-            border: none;
-            border-radius: 5px;
-            cursor: pointer;
-            font-size: 1rem;
-            transition: all 0.3s ease;
-            margin: 0 0.5rem;
+        .form-group {
+            margin-bottom: 25px;
         }
-
-        .btn:hover {
-            background: var(--primary);
-            transform: translateY(-3px);
+        .form-group label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: 500;
+            color: var(--dark);
         }
-
-        .btn i {
-            margin-right: 0.5rem;
+        .form-control {
+            width: 100%;
+            padding: 14px 18px;
+            border: 1px solid #ddd;
+            border-radius: 10px;
+            font-family: 'Poppins', sans-serif;
+            transition: var(--transition);
         }
-
-        footer {
+        .form-control:focus {
+            outline: none;
+            border-color: var(--primary);
+            box-shadow: 0 0 0 3px rgba(108, 99, 255, 0.1);
+        }
+        textarea.form-control {
+            min-height: 150px;
+            resize: vertical;
+        }
+        .success-message {
+            background-color: #e8f5e9;
+            color: var(--success);
+            padding: 15px;
+            border-radius: 10px;
+            margin-top: 20px;
             text-align: center;
-            margin-top: 3rem;
-            padding: 1rem;
-            color: #777;
+            display: none;
         }
-
-        @media (max-width: 768px) {
-            .dashboard {
+        /* Footer */
+        footer {
+            background-color: var(--dark);
+            color: white;
+            padding: 60px 0 30px;
+        }
+        .footer-content {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 40px;
+        }
+        .social-links {
+            display: flex;
+            gap: 20px;
+        }
+        .social-link {
+            width: 45px;
+            height: 45px;
+            border-radius: 50%;
+            background-color: rgba(255, 255, 255, 0.1);
+            color: white;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            text-decoration: none;
+            transition: var(--transition);
+        }
+        .social-link:hover {
+            background-color: var(--primary);
+            transform: translateY(-5px);
+        }
+        .copyright {
+            text-align: center;
+            color: rgba(255, 255, 255, 0.6);
+            padding-top: 30px;
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+        }
+        /* Animations */
+        @keyframes fadeUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+        @keyframes float {
+            0%, 100% {
+                transform: translateY(0);
+            }
+            50% {
+                transform: translateY(-20px);
+            }
+        }
+        .fade-in {
+            opacity: 0;
+            transform: translateY(30px);
+            transition: opacity 0.8s, transform 0.8s;
+        }
+        .fade-in.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+        /* Responsive Styles */
+        @media (max-width: 992px) {
+            .about-content,
+            .contact-container {
                 grid-template-columns: 1fr;
             }
-            
-            .contact-info {
+           
+            .hero h1 {
+                font-size: 3rem;
+            }
+           
+            .projects-container {
+                grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            }
+        }
+        @media (max-width: 768px) {
+            .nav-links {
+                position: fixed;
+                top: 70px;
+                left: 0;
+                width: 100%;
+                background-color: white;
                 flex-direction: column;
                 align-items: center;
+                padding: 20px 0;
+                box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
+                transform: translateY(-100%);
+                opacity: 0;
+                transition: var(--transition);
+                z-index: 999;
+            }
+           
+            .nav-links.active {
+                transform: translateY(0);
+                opacity: 1;
+            }
+           
+            .nav-links li {
+                margin: 15px 0;
+            }
+           
+            .mobile-toggle {
+                display: block;
+            }
+           
+            .hero h1 {
+                font-size: 2.5rem;
+            }
+           
+            .hero p {
+                font-size: 1.1rem;
+            }
+           
+            .section-title h2 {
+                font-size: 2.2rem;
+            }
+           
+            .chat-window {
+                width: 300px;
+                height: 450px;
+                right: -20px;
+            }
+           
+            .skills-container {
+                grid-template-columns: 1fr;
+            }
+        }
+        @media (max-width: 576px) {
+            section {
+                padding: 70px 0;
+            }
+           
+            .hero {
+                text-align: center;
+            }
+           
+            .hero-btns {
+                flex-direction: column;
+                align-items: center;
+            }
+           
+            .btn {
+                width: 100%;
+                max-width: 250px;
+            }
+           
+            .chat-window {
+                width: calc(100vw - 40px);
+                right: 20px;
+            }
+           
+            .contact-form {
+                padding: 30px 20px;
             }
         }
     </style>
 </head>
 <body>
+    <!-- Header & Navigation -->
     <header>
         <div class="container">
-            <div class="profile-img">
-                <!-- Replace the src with your actual photo path -->
-                <img src="IMG-20250222-WA0055.png" alt="Telugu Chandra Sekhar" id="profile-picture">
-                <div class="placeholder" id="profile-placeholder" style="display: none;">
-                    <i class="fas fa-user"></i>
+            <nav>
+                <a href="#" class="logo">Telugu Chandra<span>.</span></a>
+                <ul class="nav-links">
+                    <li><a href="#home">Home</a></li>
+                    <li><a href="#about">About</a></li>
+                    <li><a href="#projects">Projects</a></li>
+                    <li><a href="#contact">Contact</a></li>
+                </ul>
+                <div class="mobile-toggle">
+                    <i class="fas fa-bars"></i>
                 </div>
-            </div>
-            <h1>TELUGU CHANDRA SEKHAR</h1>
-            <p class="tagline">Software Engineering | Data Science | Project Management</p>
-            <div class="contact-info">
-                <div class="contact-item">
-                    <i class="fas fa-map-marker-alt"></i>
-                    <span>Gokavaram(v), Kothapalli(m), Kurnool(Dist)</span>
-                </div>
-                <div class="contact-item">
-                    <i class="fas fa-phone"></i>
-                    <span>+91-6305412922</span>
-                </div>
-                <div class="contact-item">
-                    <i class="fas fa-envelope"></i>
-                    <span>teluguchandrasekhar04@gmail.com</span>
-                </div>
-                <div class="contact-item">
-                    <i class="fas fa-globe"></i>
-                    <span>www.teluguchandrasekhar.com</span>
-                </div>
-            </div>
+            </nav>
         </div>
     </header>
-
-    <div class="container">
-        <div class="dashboard">
-            <div class="sidebar">
-                <div class="card">
-                    <h2>Summary</h2>
-                    <p>Results-oriented Software Engineering with a proven track record of optimizing project outcomes. Skilled in strategic project management and team leadership. Seeking a challenging executive role to leverage technical expertise and drive engineering excellence.</p>
-                </div>
-
-                <div class="card">
-                    <h2>Technical Skills</h2>
-                    <div class="skills">
-                        <span class="skill">Programming in C</span>
-                        <span class="skill">Java</span>
-                        <span class="skill">Python</span>
-                        <span class="skill">Communication</span>
-                        <span class="skill">Time-Management</span>
-                    </div>
-                </div>
-
-                <div class="card">
-                    <h2>Languages</h2>
-                    <div class="skills">
-                        <span class="skill">English</span>
-                        <span class="skill">Telugu</span>
-                    </div>
-                </div>
-
-                <div class="card">
-                    <h2>Certifications</h2>
-                    <ul>
-                        <li>C Programming</li>
-                        <li>Python Foundation</li>
-                        <li>Infosys Certified</li>
-                    </ul>
+    <!-- Hero Section -->
+    <section class="hero" id="home">
+        <div class="container">
+            <div class="hero-content">
+                <h1>Hello, I'm Telugu Chandra Sekhar</h1>
+                <p>Student at NRI INSTITUTE OF TECHNOLOGY with a proven track record of optimizing project outcomes. Skilled in strategic project management and team leadership. Seeking a challenging executive role to leverage technical expertise and drive engineering excellence.</p>
+                <div class="hero-btns">
+                    <a href="#projects" class="btn btn-primary">View My Work</a>
+                    <a href="#contact" class="btn btn-secondary">Get In Touch</a>
                 </div>
             </div>
-
-            <div class="main-content">
-                <div class="card">
-                    <h2>Work Experience</h2>
-                    <div class="timeline">
-                        <div class="timeline-item">
-                            <div class="date">Jul 2024 – Present</div>
-                            <h3>Upstricks Intern</h3>
-                            <ul>
-                                <li>Developed Python-based solutions for various projects.</li>
-                                <li>Participated in hackathons, contributing to innovative software development.</li>
-                                <li>Collaborated with teams to design and implement efficient code.</li>
-                            </ul>
-                        </div>
-                        <div class="timeline-item">
-                            <div class="date">Oct 2024</div>
-                            <h3>Power BI Intern, Cognifyz</h3>
-                            <ul>
-                                <li>Implemented cost-effective solutions, resulting in a 20% reduction in project expenses.</li>
-                                <li>Streamlined project workflows, enhancing overall efficiency.</li>
-                                <li>Immersive knowledge proved at industry level.</li>
-                            </ul>
-                        </div>
-                    </div>
+        </div>
+       
+        <!-- Floating elements -->
+        <div class="floating-elements">
+            <div class="floating-element"></div>
+            <div class="floating-element"></div>
+            <div class="floating-element"></div>
+        </div>
+    </section>
+    <!-- About Section -->
+    <section id="about">
+        <div class="container">
+            <div class="section-title fade-in">
+                <h2>About Me</h2>
+                <p>Get to know more about my skills, experience and passions</p>
+            </div>
+           
+            <div class="about-content">
+                <div class="about-img fade-in">
+                    <img src="C:\Users\T.Samba Sivudu\Downloads\IMG-20250222-WA0055.jpg" alt="Telugu Chandra Sekhar">
                 </div>
-
-                <div class="card">
-                    <h2>Education</h2>
-                    <div class="timeline">
-                        <div class="timeline-item">
-                            <div class="date">Jun 2024 – Sep 2028</div>
-                            <h3>NRI Institute of Technology, Vijayawada</h3>
-                            <ul>
-                                <li>Autonomous Engineering Institution.</li>
-                                <li>Specialization in Data Science.</li>
-                                <li>Learning about driven data condition and techniques.</li>
-                            </ul>
+                <div class="about-text fade-in">
+                    <h3>Data Science Student</h3>
+                    <p>I'm a passionate software engineer specializing in Data Science, with experience in internships focused on Python development and Power BI. I have a strong foundation in programming and project optimization.</p>
+                    <p>My expertise includes developing efficient solutions, collaborating in teams, and applying cost-effective strategies in real-world projects. I'm currently pursuing my engineering degree with a focus on data-driven techniques.</p>
+                   
+                    <div class="skills-container">
+                        <div class="skill-item">
+                            <div class="skill-header">
+                                <span class="skill-name">Python Programming</span>
+                                <span class="skill-percent">90%</span>
+                            </div>
+                            <div class="skill-bar">
+                                <div class="skill-progress" data-width="90"></div>
+                            </div>
                         </div>
-                        <div class="timeline-item">
-                            <div class="date">Aug 2022 – Aug 2024</div>
-                            <h3>Narayana Junior College</h3>
-                            <ul>
-                                <li>Kurnool (District), Andhra Pradesh.</li>
-                                <li>Completed M.P.C Course.</li>
-                            </ul>
+                        <div class="skill-item">
+                            <div class="skill-header">
+                                <span class="skill-name">Java Programming</span>
+                                <span class="skill-percent">85%</span>
+                            </div>
+                            <div class="skill-bar">
+                                <div class="skill-progress" data-width="85"></div>
+                            </div>
+                        </div>
+                        <div class="skill-item">
+                            <div class="skill-header">
+                                <span class="skill-name">C Programming</span>
+                                <span class="skill-percent">80%</span>
+                            </div>
+                            <div class="skill-bar">
+                                <div class="skill-progress" data-width="80"></div>
+                            </div>
+                        </div>
+                        <div class="skill-item">
+                            <div class="skill-header">
+                                <span class="skill-name">Communication & Time-Management</span>
+                                <span class="skill-percent">95%</span>
+                            </div>
+                            <div class="skill-bar">
+                                <div class="skill-progress" data-width="95"></div>
+                            </div>
                         </div>
                     </div>
                 </div>
             </div>
         </div>
-
-        <div class="download-section" id="resume-content">
-            <h2>Download Resume</h2>
-            <p>Download my resume in PDF or DOC format for your convenience.</p>
-            <button class="btn" id="download-pdf"><i class="fas fa-file-pdf"></i> Download PDF</button>
-            <button class="btn" id="download-doc"><i class="fas fa-file-word"></i> Download DOC</button>
+    </section>
+    <!-- Projects Section -->
+    <section id="projects">
+        <div class="container">
+            <div class="section-title fade-in">
+                <h2>My Experience & Projects</h2>
+                <p>A showcase of my recent internships and development contributions</p>
+            </div>
+           
+            <div class="projects-container">
+                <!-- Project 1 -->
+                <div class="project-card fade-in">
+                    <div class="project-img">
+                        <img src="C:\Users\T.Samba Sivudu\Pictures\Screenshots\Screenshot 2025-12-08 182240.png" alt="Upstricks Internship">
+                    </div>
+                    <div class="project-content">
+                        <h3>Upstricks Intern</h3>
+                        <p>Developed Python-based solutions for various projects. Participated in hackathons, contributing to innovative software development. Collaborated with teams to design and implement efficient code.</p>
+                        <div class="project-tech">
+                            <span class="tech-tag">Python</span>
+                            <span class="tech-tag">Hackathons</span>
+                            <span class="tech-tag">Team Collaboration</span>
+                        </div>
+                        <div class="project-links">
+                            <a href="#" class="project-link">More Details <i class="fas fa-external-link-alt"></i></a>
+                        </div>
+                    </div>
+                </div>
+               
+                <!-- Project 2 -->
+                <div class="project-card fade-in">
+                    <div class="project-img">
+                        <img src="C:\Users\T.Samba Sivudu\Pictures\Screenshots\Screenshot 2025-12-08 182425.png" alt="Power BI Internship">
+                    </div>
+                    <div class="project-content">
+                        <h3>Power BI Intern, Cognifyz</h3>
+                        <p>Implemented cost-effective solutions, resulting in a 20% reduction in project expenses. Streamlined project workflows, enhancing overall efficiency. Gained immersive knowledge at industry level.</p>
+                        <div class="project-tech">
+                            <span class="tech-tag">Power BI</span>
+                            <span class="tech-tag">Workflow Optimization</span>
+                            <span class="tech-tag">Cost Reduction</span>
+                        </div>
+                        <div class="project-links">
+                            <a href="#" class="project-link">More Details <i class="fas fa-external-link-alt"></i></a>
+                        </div>
+                    </div>
+                </div>
+               
+            </div>
         </div>
-    </div>
-
+    </section>
+    <!-- Contact Section -->
+    <section id="contact">
+        <div class="container">
+            <div class="section-title fade-in">
+                <h2>Get In Touch</h2>
+                <p>Have a project in mind? Let's work together to bring it to life</p>
+            </div>
+           
+            <div class="contact-container">
+                <div class="contact-info">
+                    <div class="contact-item fade-in">
+                        <div class="contact-icon">
+                            <i class="fas fa-envelope"></i>
+                        </div>
+                        <div class="contact-text">
+                            <h4>Email</h4>
+                            <p>teluguchandrasekhar04@gmail.com</p>
+                        </div>
+                    </div>
+                   
+                    <div class="contact-item fade-in">
+                        <div class="contact-icon">
+                            <i class="fas fa-phone"></i>
+                        </div>
+                        <div class="contact-text">
+                            <h4>Phone</h4>
+                            <p>+91-6305412922</p>
+                        </div>
+                    </div>
+                   
+                    <div class="contact-item fade-in">
+                        <div class="contact-icon">
+                            <i class="fas fa-map-marker-alt"></i>
+                        </div>
+                        <div class="contact-text">
+                            <h4>Location</h4>
+                            <p>Gokavaram(v), Kothapalli(m), Kurnool(Dist)</p>
+                        </div>
+                    </div>
+                </div>
+               
+                <div class="contact-form fade-in">
+                    <form id="contactForm">
+                        <div class="form-group">
+                            <label for="name">Full Name</label>
+                            <input type="text" id="name" class="form-control" placeholder="Enter your name" required>
+                        </div>
+                       
+                        <div class="form-group">
+                            <label for="email">Email Address</label>
+                            <input type="email" id="email" class="form-control" placeholder="Enter your email" required>
+                        </div>
+                       
+                        <div class="form-group">
+                            <label for="message">Your Message</label>
+                            <textarea id="message" class="form-control" placeholder="Tell me about your project" required></textarea>
+                        </div>
+                       
+                        <button type="submit" class="btn btn-primary" style="width: 100%;">Send Message</button>
+                    </form>
+                    <div id="successMessage" class="success-message">
+                        <i class="fas fa-check-circle"></i> Your message has been sent successfully!
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    <!-- Footer -->
     <footer>
         <div class="container">
-            <p>&copy; 2024 Telugu Chandra Sekhar. All rights reserved.</p>
+            <div class="footer-content">
+                <div class="logo">Telugu Chandra<span>.</span></div>
+                <div class="social-links">
+                    <a href="#" class="social-link"><i class="fab fa-github"></i></a>
+                    <a href="#" class="social-link"><i class="fab fa-linkedin-in"></i></a>
+                    <a href="#" class="social-link"><i class="fab fa-twitter"></i></a>
+                    <a href="#" class="social-link"><i class="fab fa-dribbble"></i></a>
+                </div>
+            </div>
+            <div class="copyright">
+                <p>&copy; 2025 Telugu Chandra Sekhar. All Rights Reserved.</p>
+            </div>
         </div>
     </footer>
-
+    <!-- Chat Interface -->
+    <div class="chat-container">
+        <button class="chat-toggle" id="chatToggle">
+            <i class="fas fa-comment-dots"></i>
+        </button>
+       
+        <div class="chat-window" id="chatWindow">
+            <div class="chat-header">
+                <h3>Chat with Telugu Chandra</h3>
+                <button class="close-chat" id="closeChat">
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
+           
+            <div class="chat-body" id="chatBody">
+                <div class="chat-message bot-message">
+                    Hello! I'm Telugu Chandra Sekhar. How can I help you today? You can ask me about my work, projects, or skills.
+                </div>
+                <div class="chat-message bot-message">
+                    Try asking me questions like:
+                    <div class="quick-questions">
+                        <button class="quick-question" data-question="What technologies do you use?">What technologies do you use?</button>
+                        <button class="quick-question" data-question="Tell me about your experience">Tell me about your experience</button>
+                        <button class="quick-question" data-question="What are your recent projects?">What are your recent projects?</button>
+                        <button class="quick-question" data-question="How can I contact you?">How can I contact you?</button>
+                    </div>
+                </div>
+            </div>
+           
+            <div class="chat-input-container">
+                <input type="text" class="chat-input" id="chatInput" placeholder="Type your message...">
+                <button class="send-btn" id="sendBtn">
+                    <i class="fas fa-paper-plane"></i>
+                </button>
+            </div>
+        </div>
+    </div>
     <script>
-        // Check if profile image loads successfully
-        document.getElementById('profile-picture').onerror = function() {
-            this.style.display = 'none';
-            document.getElementById('profile-placeholder').style.display = 'flex';
-        };
-
-        // Resume download functionality
-        document.getElementById('download-pdf').addEventListener('click', function() {
-            const element = document.getElementById('resume-content');
-            const opt = {
-                margin: 1,
-                filename: 'Telugu_Chandra_Sekhar_Resume.pdf',
-                image: { type: 'jpeg', quality: 0.98 },
-                html2canvas: { scale: 2 },
-                jsPDF: { unit: 'in', format: 'letter', orientation: 'portrait' }
-            };
-            
-            html2pdf().set(opt).from(element).save();
+        // DOM Elements
+        const mobileToggle = document.querySelector('.mobile-toggle');
+        const navLinks = document.querySelector('.nav-links');
+        const chatToggle = document.getElementById('chatToggle');
+        const chatWindow = document.getElementById('chatWindow');
+        const closeChat = document.getElementById('closeChat');
+        const chatBody = document.getElementById('chatBody');
+        const chatInput = document.getElementById('chatInput');
+        const sendBtn = document.getElementById('sendBtn');
+        const quickQuestions = document.querySelectorAll('.quick-question');
+        const contactForm = document.getElementById('contactForm');
+        const successMessage = document.getElementById('successMessage');
+        const skillProgressBars = document.querySelectorAll('.skill-progress');
+        const fadeElements = document.querySelectorAll('.fade-in');
+        // Mobile Navigation Toggle
+        mobileToggle.addEventListener('click', () => {
+            navLinks.classList.toggle('active');
+            mobileToggle.innerHTML = navLinks.classList.contains('active')
+                ? '<i class="fas fa-times"></i>'
+                : '<i class="fas fa-bars"></i>';
         });
-
-        document.getElementById('download-doc').addEventListener('click', function() {
-            // Create a simple text version for DOC download
-            const content = `
-TELUGU CHANDRA SEKHAR
-Gokavaram(v), Kothapalli(m), Kurnool(Dist) • +91-6305412922 • teluguchandrasekhar04@gmail.com • www.teluguchandrasekhar.com
-
-SUMMARY
-Results-oriented Software Engineering with a proven track record of optimizing project outcomes.
-Skilled in strategic project management and team leadership. Seeking a challenging executive role to
-leverage technical expertise and drive engineering excellence.
-
-WORK EXPERIENCE
-
-Upstricks Intern Jul 2025–present
-- Developed Python-based solutions for various projects.
-- Participated in hackathons, contributing to innovative software development.
-- Collaborated with teams to design and implement efficient code.
-
-Power BI Intern, Cognifyz Oct 2024
-- Implemented cost-effective solutions, resulting in a 20% reduction in project expenses.
-- Streamlined project workflows, enhancing overall efficiency.
-- Immersive knowledge proved at industry level.
-
-EDUCATION
-
-NRI Institute of Technology, Vijayawada Jun 2024 – Sep 2028
-- Autonomous Engineering Institution.
-- Specialization in Data Science.
-- Learning about driven data condition and techniques.
-
-Narayana Junior College Aug 2022 – Aug 2024
-- Kurnool (District), Andhra Pradesh.
-- Completed M.P.C Course.
-
-ADDITIONAL INFORMATION
-
-Technical Skills: Programming in C, Java, Python, Communication, Time-Management.
-Languages: English, Telugu
-Certifications:
-• C Programming
-• Python Foundation
-• Infosys Certified
-            `;
-            
-            const blob = new Blob([content], { type: 'application/msword' });
-            const url = URL.createObjectURL(blob);
-            const a = document.createElement('a');
-            a.href = url;
-            a.download = 'Telugu_Chandra_Sekhar_Resume.doc';
-            document.body.appendChild(a);
-            a.click();
-            document.body.removeChild(a);
-            URL.revokeObjectURL(url);
+        // Close mobile menu when clicking a link
+        document.querySelectorAll('.nav-links a').forEach(link => {
+            link.addEventListener('click', () => {
+                navLinks.classList.remove('active');
+                mobileToggle.innerHTML = '<i class="fas fa-bars"></i>';
+            });
+        });
+        // Chat Interface
+        chatToggle.addEventListener('click', () => {
+            chatWindow.classList.toggle('active');
+        });
+        closeChat.addEventListener('click', () => {
+            chatWindow.classList.remove('active');
+        });
+        // Chat bot responses
+        const botResponses = {
+            "hello": "Hello! How can I help you today? Feel free to ask me about my projects, skills, or experience.",
+            "hi": "Hi there! What would you like to know about my work?",
+            "what technologies do you use?": "I work with programming languages like C, Java, and Python. I also have skills in communication and time-management.",
+            "tell me about your experience": "I have internship experience at Upstricks (Python development) and Cognifyz (Power BI). I'm specializing in Data Science.",
+            "what are your recent projects?": "My recent work includes Python-based solutions and Power BI implementations for cost reduction and efficiency. Check the Experience section!",
+            "how can i contact you?": "You can reach me via email at teluguchandrasekhar04@gmail.com or through the contact form on this website.",
+            "what is your design process?": "My process involves strategic project management, team collaboration, and optimizing outcomes with data-driven techniques.",
+            "are you available for freelance work?": "Yes, I'm open to opportunities. Contact me with details about your project.",
+            "what are your rates?": "Rates depend on project scope. Let's discuss your needs for a tailored quote.",
+            "default": "I'm not sure how to answer that. You can ask me about my skills, experience, or how to contact me. Try the quick questions!"
+        };
+        // Function to add message to chat
+        function addMessage(text, isUser = false) {
+            const messageDiv = document.createElement('div');
+            messageDiv.classList.add('chat-message');
+            messageDiv.classList.add(isUser ? 'user-message' : 'bot-message');
+            messageDiv.textContent = text;
+            chatBody.appendChild(messageDiv);
+            chatBody.scrollTop = chatBody.scrollHeight;
+        }
+        // Function to handle user messages
+        function handleUserMessage() {
+            const userText = chatInput.value.trim().toLowerCase();
+            if (!userText) return;
+           
+            addMessage(userText, true);
+            chatInput.value = '';
+           
+            // Simulate typing delay
+            setTimeout(() => {
+                let response = botResponses.default;
+               
+                // Check for matching responses
+                for (const key in botResponses) {
+                    if (userText.includes(key)) {
+                        response = botResponses[key];
+                        break;
+                    }
+                }
+               
+                addMessage(response);
+            }, 500);
+        }
+        // Send message on button click
+        sendBtn.addEventListener('click', handleUserMessage);
+        // Send message on Enter key
+        chatInput.addEventListener('keypress', (e) => {
+            if (e.key === 'Enter') {
+                handleUserMessage();
+            }
+        });
+        // Quick question buttons
+        quickQuestions.forEach(button => {
+            button.addEventListener('click', () => {
+                const question = button.getAttribute('data-question');
+                chatInput.value = question;
+                handleUserMessage();
+            });
+        });
+        // Contact Form Submission
+        contactForm.addEventListener('submit', (e) => {
+            e.preventDefault();
+           
+            // Get form values
+            const name = document.getElementById('name').value;
+            const email = document.getElementById('email').value;
+            const message = document.getElementById('message').value;
+           
+            // In a real application, you would send this data to a server
+            console.log('Form submitted:', { name, email, message });
+           
+            // Show success message
+            successMessage.style.display = 'block';
+            contactForm.reset();
+           
+            // Hide success message after 5 seconds
+            setTimeout(() => {
+                successMessage.style.display = 'none';
+            }, 5000);
+        });
+        // Animate skill bars on scroll
+        function animateSkillBars() {
+            skillProgressBars.forEach(bar => {
+                const width = bar.getAttribute('data-width');
+                bar.style.width = width + '%';
+            });
+        }
+        // Check if element is in viewport
+        function isInViewport(element) {
+            const rect = element.getBoundingClientRect();
+            return (
+                rect.top <= (window.innerHeight || document.documentElement.clientHeight) * 0.8
+            );
+        }
+        // Handle scroll animations
+        function handleScrollAnimations() {
+            // Animate skill bars when about section is in view
+            if (isInViewport(document.getElementById('about'))) {
+                animateSkillBars();
+            }
+           
+            // Handle fade-in elements
+            fadeElements.forEach(element => {
+                if (isInViewport(element)) {
+                    element.classList.add('visible');
+                }
+            });
+        }
+        // Initial call to handle animations on page load
+        document.addEventListener('DOMContentLoaded', () => {
+            handleScrollAnimations();
+           
+            // Add initial welcome message to chat
+            setTimeout(() => {
+                if (!chatWindow.classList.contains('active')) {
+                    addMessage("Welcome! I'm Telugu Chandra Sekhar, a software engineer. Feel free to ask me anything about my work or experience.");
+                }
+            }, 1000);
+        });
+        // Listen for scroll events
+        window.addEventListener('scroll', handleScrollAnimations);
+        // Smooth scrolling for anchor links
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function(e) {
+                e.preventDefault();
+               
+                const targetId = this.getAttribute('href');
+                if (targetId === '#') return;
+               
+                const targetElement = document.querySelector(targetId);
+                if (targetElement) {
+                    window.scrollTo({
+                        top: targetElement.offsetTop - 80,
+                        behavior: 'smooth'
+                    });
+                }
+            });
         });
     </script>
 </body>
-
 </html>
-
-

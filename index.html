@@ -643,11 +643,49 @@
             background-color: var(--primary);
             transform: translateY(-5px);
         }
+        /* Resume Download Section */
+        .resume-section {
+            text-align: center;
+            padding: 30px 0;
+            margin: 30px 0;
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+        }
+        .resume-section h3 {
+            font-size: 1.5rem;
+            margin-bottom: 20px;
+            color: white;
+        }
+        .resume-desc {
+            color: rgba(255, 255, 255, 0.7);
+            max-width: 500px;
+            margin: 0 auto 25px;
+            font-size: 0.95rem;
+        }
+        .resume-btn {
+            background-color: var(--primary);
+            color: white;
+            padding: 15px 35px;
+            border-radius: 50px;
+            font-weight: 600;
+            font-size: 1rem;
+            text-decoration: none;
+            display: inline-flex;
+            align-items: center;
+            gap: 10px;
+            transition: var(--transition);
+            border: none;
+            cursor: pointer;
+        }
+        .resume-btn:hover {
+            background-color: var(--primary-dark);
+            transform: translateY(-5px);
+            box-shadow: 0 10px 25px rgba(108, 99, 255, 0.3);
+        }
         .copyright {
             text-align: center;
             color: rgba(255, 255, 255, 0.6);
             padding-top: 30px;
-            border-top: 1px solid rgba(255, 255, 255, 0.1);
         }
         /* Animations */
         @keyframes fadeUp {
@@ -743,6 +781,12 @@
             .skills-container {
                 grid-template-columns: 1fr;
             }
+           
+            .footer-content {
+                flex-direction: column;
+                text-align: center;
+                gap: 30px;
+            }
         }
         @media (max-width: 576px) {
             section {
@@ -770,6 +814,11 @@
            
             .contact-form {
                 padding: 30px 20px;
+            }
+           
+            .resume-btn {
+                padding: 12px 25px;
+                font-size: 0.9rem;
             }
         }
     </style>
@@ -1016,6 +1065,19 @@
                     <a href="https://www.linkedin.com/in/chandra-sekhar-telugu-4296b3327/" class="social-link"><i class="fab fa-linkedin-in"></i></a>
                 </div>
             </div>
+           
+            <!-- ADDED RESUME DOWNLOAD SECTION -->
+            <div class="resume-section fade-in">
+                <h3>Download My Resume</h3>
+                <p class="resume-desc">Get a complete PDF version of my resume with detailed information about my education, skills, and work experience.</p>
+                <a href="Telugu_Chandra_Sekhar_ATS_Resume.pdf" class="resume-btn" download>
+                    <i class="fas fa-download"></i> Download Resume
+                </a>
+                <p style="color: rgba(255,255,255,0.5); font-size: 0.85rem; margin-top: 15px;">
+                    <i class="fas fa-file-pdf"></i> PDF Format • Updated December 2025
+                </p>
+            </div>
+           
             <div class="copyright">
                 <p>&copy; 2025 Telugu Chandra Sekhar. All Rights Reserved.</p>
             </div>
@@ -1236,11 +1298,4 @@
         });
     </script>
 </body>
-
 </html>
-
-
-
-
-
-

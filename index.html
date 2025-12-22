@@ -1,3 +1,41 @@
+from flask import Flask, render_template_string, request, jsonify
+from datetime import datetime
+
+app = Flask(__name__)
+
+# Chat responses
+bot_responses = {
+    "hello": "Hello! I'm Telugu Chandra Sekhar. How can I help you today? You can ask me about my work, projects, or skills.",
+    "hi": "Hi there! What would you like to know about my work?",
+    "what technologies do you use?": "I work with programming languages like C, Java, and Python. I also have experience with Power BI and various development tools.",
+    "tell me about your experience": "I have completed internships at Upstricks (Python development), Cognifyz (Power BI), and Elevate Labs (Python Developer).",
+    "what are your recent projects?": "My recent projects include Python-based solutions at Upstricks, Power BI implementations at Cognifyz, and Python development at Elevate Labs.",
+    "how can i contact you?": "You can reach me via email at teluguchandrasekhar04@gmail.com or phone at +91-6305412922.",
+    "what is your education?": "I'm pursuing engineering at NRI INSTITUTE OF TECHNOLOGY, specializing in Data Science.",
+    "what are your skills?": "Technical: Python, Java, C, Power BI. Soft skills: Communication, Time Management, Team Collaboration.",
+    "default": "I'm not sure how to answer that. You can ask me about my skills, experience, or how to contact me."
+}
+
+def get_bot_response(user_input):
+    user_input = user_input.lower().strip()
+    
+    for key in bot_responses:
+        if key in user_input:
+            return bot_responses[key]
+    
+    if any(word in user_input for word in ['tech', 'programming']):
+        return bot_responses["what technologies do you use?"]
+    elif any(word in user_input for word in ['experience', 'intern']):
+        return bot_responses["tell me about your experience"]
+    elif any(word in user_input for word in ['project']):
+        return bot_responses["what are your recent projects?"]
+    elif any(word in user_input for word in ['contact', 'email']):
+        return bot_responses["how can i contact you?"]
+    
+    return bot_responses["default"]
+
+# HTML Template
+html_template = '''
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -967,7 +1005,7 @@
                     </div>
                 </div>
                 <!--Project 3-->
-                <div class="project-card fade in">
+                <div class="project-card fade-in">
                     <div class="project-img">
                         <img src="elevate labs.jpg" alt="Elevate Labs Internship">
                     </div> 
@@ -975,7 +1013,7 @@
                         <h3>Python Developer Internship,Elevate Labs</h3>
                         <p>This Internship provided an opportunity to apply foundational Python knowledge to real-world applications and modern development workflows.</p>
                         <div class="project-tech">
-                            <span class="tech-tag">Voice Assisstant</span>
+                            <span class="tech-tag">Voice Assistant</span>
                             <span class="tech-tag">More Efficiency</span>
                         </div>
                         <div class="project-links">
@@ -983,8 +1021,6 @@
                         </div>
                     </div>
                 </div>
-                
-               
             </div>
         </div>
     </section>
@@ -1120,6 +1156,7 @@
             </div>
         </div>
     </div>
+
     <script>
         // DOM Elements
         const mobileToggle = document.querySelector('.mobile-toggle');
@@ -1135,6 +1172,7 @@
         const successMessage = document.getElementById('successMessage');
         const skillProgressBars = document.querySelectorAll('.skill-progress');
         const fadeElements = document.querySelectorAll('.fade-in');
+
         // Mobile Navigation Toggle
         mobileToggle.addEventListener('click', () => {
             navLinks.classList.toggle('active');
@@ -1142,6 +1180,7 @@
                 ? '<i class="fas fa-times"></i>'
                 : '<i class="fas fa-bars"></i>';
         });
+
         // Close mobile menu when clicking a link
         document.querySelectorAll('.nav-links a').forEach(link => {
             link.addEventListener('click', () => {
@@ -1149,26 +1188,19 @@
                 mobileToggle.innerHTML = '<i class="fas fa-bars"></i>';
             });
         });
+
         // Chat Interface
         chatToggle.addEventListener('click', () => {
             chatWindow.classList.toggle('active');
+            if (chatWindow.classList.contains('active')) {
+                chatInput.focus();
+            }
         });
+
         closeChat.addEventListener('click', () => {
             chatWindow.classList.remove('active');
         });
-        // Chat bot responses
-        const botResponses = {
-            "hello": "Hello! How can I help you today? Feel free to ask me about my projects, skills, or experience.",
-            "hi": "Hi there! What would you like to know about my work?",
-            "what technologies do you use?": "I work with programming languages like C, Java, and Python. I also have skills in communication and time-management.",
-            "tell me about your experience": "I have internship experience at Upstricks (Python development) and Cognifyz (Power BI). I'm specializing in Data Science.",
-            "what are your recent projects?": "My recent work includes Python-based solutions and Power BI implementations for cost reduction and efficiency. Check the Experience section!",
-            "how can i contact you?": "You can reach me via email at teluguchandrasekhar04@gmail.com or through the contact form on this website.",
-            "what is your design process?": "My process involves strategic project management, team collaboration, and optimizing outcomes with data-driven techniques.",
-            "are you available for freelance work?": "Yes, I'm open to opportunities. Contact me with details about your project.",
-            "what are your rates?": "Rates depend on project scope. Let's discuss your needs for a tailored quote.",
-            "default": "I'm not sure how to answer that. You can ask me about my skills, experience, or how to contact me. Try the quick questions!"
-        };
+
         // Function to add message to chat
         function addMessage(text, isUser = false) {
             const messageDiv = document.createElement('div');
@@ -1178,37 +1210,49 @@
             chatBody.appendChild(messageDiv);
             chatBody.scrollTop = chatBody.scrollHeight;
         }
-        // Function to handle user messages
-        function handleUserMessage() {
-            const userText = chatInput.value.trim().toLowerCase();
+
+        // Send message to Flask backend
+        async function sendMessageToBackend(userMessage) {
+            try {
+                const response = await fetch('/send_message', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({ message: userMessage })
+                });
+                
+                const data = await response.json();
+                return data.bot_response || "I'm sorry, I didn't understand that.";
+            } catch (error) {
+                console.error('Error:', error);
+                return "Sorry, there was an error processing your message.";
+            }
+        }
+
+        // Handle user messages
+        async function handleUserMessage() {
+            const userText = chatInput.value.trim();
             if (!userText) return;
-           
+            
             addMessage(userText, true);
             chatInput.value = '';
-           
-            // Simulate typing delay
-            setTimeout(() => {
-                let response = botResponses.default;
-               
-                // Check for matching responses
-                for (const key in botResponses) {
-                    if (userText.includes(key)) {
-                        response = botResponses[key];
-                        break;
-                    }
-                }
-               
-                addMessage(response);
-            }, 500);
+            
+            // Get response from Flask backend
+            const botResponse = await sendMessageToBackend(userText);
+            addMessage(botResponse);
         }
+
         // Send message on button click
         sendBtn.addEventListener('click', handleUserMessage);
+
         // Send message on Enter key
         chatInput.addEventListener('keypress', (e) => {
             if (e.key === 'Enter') {
                 handleUserMessage();
             }
         });
+
         // Quick question buttons
         quickQuestions.forEach(button => {
             button.addEventListener('click', () => {
@@ -1217,27 +1261,36 @@
                 handleUserMessage();
             });
         });
+
         // Contact Form Submission
-        contactForm.addEventListener('submit', (e) => {
+        contactForm.addEventListener('submit', async (e) => {
             e.preventDefault();
-           
-            // Get form values
-            const name = document.getElementById('name').value;
-            const email = document.getElementById('email').value;
-            const message = document.getElementById('message').value;
-           
-            // In a real application, you would send this data to a server
-            console.log('Form submitted:', { name, email, message });
-           
-            // Show success message
-            successMessage.style.display = 'block';
-            contactForm.reset();
-           
-            // Hide success message after 5 seconds
-            setTimeout(() => {
-                successMessage.style.display = 'none';
-            }, 5000);
+            
+            const formData = new FormData(contactForm);
+            
+            try {
+                const response = await fetch('/contact', {
+                    method: 'POST',
+                    body: formData
+                });
+                
+                const data = await response.json();
+                
+                if (data.success) {
+                    successMessage.style.display = 'block';
+                    contactForm.reset();
+                    
+                    setTimeout(() => {
+                        successMessage.style.display = 'none';
+                    }, 5000);
+                }
+            } catch (error) {
+                console.error('Error:', error);
+                successMessage.textContent = "An error occurred. Please try again.";
+                successMessage.style.display = 'block';
+            }
         });
+
         // Animate skill bars on scroll
         function animateSkillBars() {
             skillProgressBars.forEach(bar => {
@@ -1245,6 +1298,7 @@
                 bar.style.width = width + '%';
             });
         }
+
         // Check if element is in viewport
         function isInViewport(element) {
             const rect = element.getBoundingClientRect();
@@ -1252,6 +1306,7 @@
                 rect.top <= (window.innerHeight || document.documentElement.clientHeight) * 0.8
             );
         }
+
         // Handle scroll animations
         function handleScrollAnimations() {
             // Animate skill bars when about section is in view
@@ -1266,19 +1321,15 @@
                 }
             });
         }
+
         // Initial call to handle animations on page load
         document.addEventListener('DOMContentLoaded', () => {
             handleScrollAnimations();
-           
-            // Add initial welcome message to chat
-            setTimeout(() => {
-                if (!chatWindow.classList.contains('active')) {
-                    addMessage("Welcome! I'm Telugu Chandra Sekhar, a software engineer. Feel free to ask me anything about my work or experience.");
-                }
-            }, 1000);
         });
+
         // Listen for scroll events
         window.addEventListener('scroll', handleScrollAnimations);
+
         // Smooth scrolling for anchor links
         document.querySelectorAll('a[href^="#"]').forEach(anchor => {
             anchor.addEventListener('click', function(e) {
@@ -1299,3 +1350,56 @@
     </script>
 </body>
 </html>
+'''
+
+@app.route('/')
+def index():
+    return render_template_string(html_template)
+
+@app.route('/send_message', methods=['POST'])
+def send_message():
+    """Handle chat messages from frontend"""
+    try:
+        data = request.get_json()
+        user_message = data.get('message', '').strip()
+        
+        if not user_message:
+            return jsonify({'error': 'Empty message'}), 400
+        
+        bot_response = get_bot_response(user_message)
+        
+        return jsonify({
+            'success': True,
+            'bot_response': bot_response,
+            'user_message': user_message
+        })
+        
+    except Exception as e:
+        return jsonify({'error': str(e)}), 500
+
+@app.route('/contact', methods=['POST'])
+def contact():
+    """Handle contact form submissions"""
+    try:
+        name = request.form.get('name', '')
+        email = request.form.get('email', '')
+        message = request.form.get('message', '')
+        
+        # In production, you would:
+        # 1. Save to database
+        # 2. Send email notification
+        print(f"Contact form submitted: {name} - {email} - {message}")
+        
+        return jsonify({
+            'success': True,
+            'message': 'Thank you for your message! I will get back to you soon.'
+        })
+        
+    except Exception as e:
+        return jsonify({
+            'success': False,
+            'message': 'An error occurred. Please try again later.'
+        }), 500
+
+if __name__ == '__main__':
+    app.run(debug=True, port=5000)

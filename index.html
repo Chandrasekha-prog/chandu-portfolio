@@ -3,1299 +3,1308 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Telugu Chandra Sekhar | Interactive Portfolio</title>
+    <title>Location Tracker</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&family=Montserrat:wght@800;900&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
     <style>
-        :root {
-            --primary: #6C63FF;
-            --primary-dark: #554fd8;
-            --secondary: #FF6584;
-            --dark: #2A2D43;
-            --light: #F5F5F7;
-            --gray: #8A8DAA;
-            --success: #4CAF50;
-            --transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
-            --shadow: 0 10px 30px rgba(0, 0, 0, 0.08);
-            --shadow-hover: 0 15px 40px rgba(0, 0, 0, 0.12);
-        }
         * {
             margin: 0;
             padding: 0;
             box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
         }
-        html {
-            scroll-behavior: smooth;
+
+        :root {
+            --primary: #2563eb;
+            --primary-dark: #1d4ed8;
+            --secondary: #10b981;
+            --danger: #ef4444;
+            --warning: #f59e0b;
+            --dark: #1f2937;
+            --light: #f9fafb;
+            --gray: #6b7280;
+            --border: #e5e7eb;
         }
+
         body {
-            font-family: 'Poppins', sans-serif;
-            background-color: var(--light);
-            color: var(--dark);
-            line-height: 1.6;
-            overflow-x: hidden;
+            background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+            min-height: 100vh;
+            padding: 20px;
         }
-        h1, h2, h3, h4 {
-            font-family: 'Montserrat', sans-serif;
-            font-weight: 800;
-        }
+
         .container {
-            width: 90%;
             max-width: 1200px;
             margin: 0 auto;
-            padding: 0 20px;
+            background: white;
+            border-radius: 20px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+            overflow: hidden;
         }
-        section {
-            padding: 100px 0;
-        }
-        /* Header & Navigation */
+
         header {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            z-index: 1000;
-            background-color: rgba(255, 255, 255, 0.95);
-            backdrop-filter: blur(10px);
-            box-shadow: 0 5px 20px rgba(0, 0, 0, 0.05);
-            transition: var(--transition);
-        }
-        nav {
+            background: linear-gradient(90deg, var(--primary), var(--primary-dark));
+            color: white;
+            padding: 25px 30px;
             display: flex;
             justify-content: space-between;
             align-items: center;
-            padding: 20px 0;
         }
+
         .logo {
-            font-size: 1.8rem;
-            font-weight: 900;
-            color: var(--primary);
-            text-decoration: none;
-        }
-        .logo span {
-            color: var(--secondary);
-        }
-        .nav-links {
-            display: flex;
-            list-style: none;
-        }
-        .nav-links li {
-            margin-left: 30px;
-        }
-        .nav-links a {
-            text-decoration: none;
-            color: var(--dark);
-            font-weight: 500;
-            font-size: 1rem;
-            position: relative;
-            padding: 5px 0;
-            transition: var(--transition);
-        }
-        .nav-links a:hover {
-            color: var(--primary);
-        }
-        .nav-links a::after {
-            content: '';
-            position: absolute;
-            bottom: 0;
-            left: 0;
-            width: 0;
-            height: 2px;
-            background-color: var(--primary);
-            transition: var(--transition);
-        }
-        .nav-links a:hover::after {
-            width: 100%;
-        }
-        .mobile-toggle {
-            display: none;
-            font-size: 1.5rem;
-            cursor: pointer;
-            color: var(--dark);
-        }
-        /* Hero Section */
-        .hero {
-            height: 100vh;
             display: flex;
             align-items: center;
-            position: relative;
-            overflow: hidden;
-            background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+            gap: 15px;
         }
-        .hero-content {
-            max-width: 700px;
-            z-index: 2;
+
+        .logo i {
+            font-size: 28px;
         }
-        .hero h1 {
-            font-size: 4rem;
-            line-height: 1.1;
-            margin-bottom: 20px;
-            background: linear-gradient(90deg, var(--primary), var(--secondary));
-            -webkit-background-clip: text;
-            background-clip: text;
-            color: transparent;
-            opacity: 0;
-            animation: fadeUp 0.8s 0.2s forwards;
+
+        .logo h1 {
+            font-size: 24px;
+            font-weight: 700;
         }
-        .hero p {
-            font-size: 1.3rem;
-            color: var(--gray);
-            margin-bottom: 30px;
-            opacity: 0;
-            animation: fadeUp 0.8s 0.4s forwards;
-        }
-        .hero-btns {
+
+        .tabs {
             display: flex;
-            gap: 20px;
-            opacity: 0;
-            animation: fadeUp 0.8s 0.6s forwards;
+            background: var(--light);
+            border-bottom: 1px solid var(--border);
         }
-        .btn {
-            padding: 14px 32px;
-            border-radius: 50px;
+
+        .tab {
+            padding: 18px 30px;
             font-weight: 600;
-            font-size: 1rem;
-            text-decoration: none;
-            display: inline-block;
-            transition: var(--transition);
             cursor: pointer;
-            border: none;
-            font-family: 'Poppins', sans-serif;
-        }
-        .btn-primary {
-            background-color: var(--primary);
-            color: white;
-            box-shadow: var(--shadow);
-        }
-        .btn-primary:hover {
-            background-color: var(--primary-dark);
-            transform: translateY(-5px);
-            box-shadow: var(--shadow-hover);
-        }
-        .btn-secondary {
-            background-color: transparent;
-            color: var(--primary);
-            border: 2px solid var(--primary);
-        }
-        .btn-secondary:hover {
-            background-color: rgba(108, 99, 255, 0.1);
-            transform: translateY(-5px);
-        }
-        /* Floating elements */
-        .floating-elements {
-            position: absolute;
-            width: 100%;
-            height: 100%;
-            top: 0;
-            left: 0;
-            overflow: hidden;
-            z-index: 1;
-        }
-        .floating-element {
-            position: absolute;
-            border-radius: 50%;
-            background: rgba(108, 99, 255, 0.1);
-            animation: float 6s infinite ease-in-out;
-        }
-        .floating-element:nth-child(1) {
-            width: 80px;
-            height: 80px;
-            top: 20%;
-            right: 10%;
-            animation-delay: 0s;
-        }
-        .floating-element:nth-child(2) {
-            width: 120px;
-            height: 120px;
-            bottom: 20%;
-            right: 15%;
-            animation-delay: 2s;
-        }
-        .floating-element:nth-child(3) {
-            width: 60px;
-            height: 60px;
-            top: 40%;
-            right: 25%;
-            animation-delay: 4s;
-        }
-        /* Section Titles */
-        .section-title {
-            text-align: center;
-            margin-bottom: 60px;
-        }
-        .section-title h2 {
-            font-size: 2.8rem;
-            color: var(--dark);
-            margin-bottom: 15px;
-            position: relative;
-            display: inline-block;
-        }
-        .section-title h2::after {
-            content: '';
-            position: absolute;
-            bottom: -10px;
-            left: 50%;
-            transform: translateX(-50%);
-            width: 70px;
-            height: 4px;
-            background-color: var(--primary);
-            border-radius: 2px;
-        }
-        .section-title p {
+            transition: all 0.3s;
             color: var(--gray);
-            max-width: 600px;
-            margin: 0 auto;
+            border-bottom: 3px solid transparent;
         }
-        /* About Section */
-        .about-content {
+
+        .tab.active {
+            color: var(--primary);
+            border-bottom: 3px solid var(--primary);
+            background: rgba(37, 99, 235, 0.05);
+        }
+
+        .tab:hover {
+            background: rgba(37, 99, 235, 0.08);
+        }
+
+        .tab-content {
+            display: none;
+            padding: 30px;
+            min-height: 500px;
+        }
+
+        .tab-content.active {
+            display: block;
+        }
+
+        /* Tracker Tab */
+        .tracker-container {
             display: grid;
             grid-template-columns: 1fr 1fr;
-            gap: 50px;
-            align-items: center;
-        }
-        .about-img {
-            position: relative;
-        }
-        .about-img img {
-            width: 100%;
-            border-radius: 20px;
-            box-shadow: var(--shadow);
-            transition: var(--transition);
-        }
-        .about-img:hover img {
-            transform: translateY(-10px);
-            box-shadow: var(--shadow-hover);
-        }
-        .about-text h3 {
-            font-size: 2rem;
-            margin-bottom: 20px;
-            color: var(--dark);
-        }
-        .about-text p {
-            margin-bottom: 25px;
-            color: var(--gray);
-        }
-        .skills-container {
-            display: grid;
-            grid-template-columns: repeat(2, 1fr);
-            gap: 20px;
-            margin-top: 30px;
-        }
-        .skill-item {
-            background-color: white;
-            padding: 20px;
-            border-radius: 10px;
-            box-shadow: var(--shadow);
-            transition: var(--transition);
-            cursor: pointer;
-        }
-        .skill-item:hover {
-            transform: translateY(-5px);
-            box-shadow: var(--shadow-hover);
-        }
-        .skill-header {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin-bottom: 10px;
-        }
-        .skill-name {
-            font-weight: 600;
-            color: var(--dark);
-        }
-        .skill-percent {
-            color: var(--primary);
-            font-weight: 600;
-        }
-        .skill-bar {
-            height: 8px;
-            background-color: #eee;
-            border-radius: 4px;
-            overflow: hidden;
-        }
-        .skill-progress {
-            height: 100%;
-            background-color: var(--primary);
-            border-radius: 4px;
-            width: 0;
-            transition: width 1.5s ease;
-        }
-        /* Projects Section */
-        .projects-container {
-            display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
             gap: 30px;
         }
-        .project-card {
-            background-color: white;
+
+        .tracker-card {
+            background: var(--light);
             border-radius: 15px;
-            overflow: hidden;
-            box-shadow: var(--shadow);
-            transition: var(--transition);
-            position: relative;
-        }
-        .project-card:hover {
-            transform: translateY(-10px);
-            box-shadow: var(--shadow-hover);
-        }
-        .project-img {
-            height: 220px;
-            width: 100%;
-            overflow: hidden;
-        }
-        .project-img img {
-            width: 100%;
-            height: 100%;
-            object-fit: cover;
-            transition: var(--transition);
-        }
-        .project-card:hover .project-img img {
-            transform: scale(1.05);
-        }
-        .project-content {
             padding: 25px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
         }
-        .project-content h3 {
-            font-size: 1.5rem;
-            margin-bottom: 10px;
+
+        .card-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+        }
+
+        .card-title {
+            font-size: 20px;
+            font-weight: 700;
             color: var(--dark);
         }
-        .project-content p {
-            color: var(--gray);
-            margin-bottom: 20px;
-            font-size: 0.95rem;
-        }
-        .project-tech {
-            display: flex;
-            flex-wrap: wrap;
-            gap: 10px;
-            margin-bottom: 20px;
-        }
-        .tech-tag {
-            background-color: rgba(108, 99, 255, 0.1);
-            color: var(--primary);
-            padding: 5px 12px;
-            border-radius: 20px;
-            font-size: 0.85rem;
-            font-weight: 500;
-        }
-        .project-links {
-            display: flex;
-            justify-content: space-between;
-        }
-        .project-link {
-            color: var(--primary);
-            text-decoration: none;
-            font-weight: 600;
-            display: flex;
-            align-items: center;
-            gap: 5px;
-            transition: var(--transition);
-        }
-        .project-link:hover {
-            color: var(--primary-dark);
-        }
-        /* Chat Interface */
-        .chat-container {
-            position: fixed;
-            bottom: 30px;
-            right: 30px;
-            z-index: 1000;
-        }
-        .chat-toggle {
-            width: 60px;
-            height: 60px;
-            border-radius: 50%;
-            background-color: var(--primary);
-            color: white;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            font-size: 1.5rem;
-            cursor: pointer;
-            box-shadow: 0 5px 20px rgba(108, 99, 255, 0.3);
-            transition: var(--transition);
-            border: none;
-        }
-        .chat-toggle:hover {
-            background-color: var(--primary-dark);
-            transform: scale(1.1);
-        }
-        .chat-window {
-            position: absolute;
-            bottom: 80px;
-            right: 0;
-            width: 350px;
-            height: 500px;
-            background-color: white;
-            border-radius: 15px;
-            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.15);
-            display: none;
-            flex-direction: column;
-            overflow: hidden;
-            transition: var(--transition);
-        }
-        .chat-window.active {
-            display: flex;
-        }
-        .chat-header {
-            background-color: var(--primary);
-            color: white;
-            padding: 20px;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-        }
-        .chat-header h3 {
-            font-size: 1.2rem;
-        }
-        .close-chat {
-            background: none;
-            border: none;
-            color: white;
-            font-size: 1.2rem;
-            cursor: pointer;
-        }
-        .chat-body {
-            flex: 1;
-            padding: 20px;
-            overflow-y: auto;
-            display: flex;
-            flex-direction: column;
-            gap: 15px;
-        }
-        .chat-message {
-            max-width: 80%;
-            padding: 12px 16px;
-            border-radius: 18px;
-            line-height: 1.4;
-        }
-        .bot-message {
-            background-color: #f0f0f0;
-            align-self: flex-start;
-            border-bottom-left-radius: 5px;
-        }
-        .user-message {
-            background-color: var(--primary);
-            color: white;
-            align-self: flex-end;
-            border-bottom-right-radius: 5px;
-        }
-        .chat-input-container {
-            padding: 20px;
-            border-top: 1px solid #eee;
-            display: flex;
-            gap: 10px;
-        }
-        .chat-input {
-            flex: 1;
-            padding: 12px 18px;
-            border: 1px solid #ddd;
-            border-radius: 50px;
-            font-family: 'Poppins', sans-serif;
-            outline: none;
-            transition: var(--transition);
-        }
-        .chat-input:focus {
-            border-color: var(--primary);
-        }
-        .send-btn {
-            width: 45px;
-            height: 45px;
-            border-radius: 50%;
-            background-color: var(--primary);
-            color: white;
-            border: none;
-            cursor: pointer;
-            transition: var(--transition);
-            display: flex;
-            justify-content: center;
-            align-items: center;
-        }
-        .send-btn:hover {
-            background-color: var(--primary-dark);
-        }
-        .quick-questions {
-            display: flex;
-            flex-wrap: wrap;
-            gap: 10px;
-            margin-top: 10px;
-        }
-        .quick-question {
-            background-color: rgba(108, 99, 255, 0.1);
-            color: var(--primary);
-            border: none;
+
+        .status-badge {
             padding: 8px 15px;
-            border-radius: 20px;
-            font-size: 0.85rem;
-            cursor: pointer;
-            transition: var(--transition);
-        }
-        .quick-question:hover {
-            background-color: rgba(108, 99, 255, 0.2);
-        }
-        /* Contact Form */
-        .contact-container {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 50px;
-            align-items: start;
-        }
-        .contact-info {
-            display: flex;
-            flex-direction: column;
-            gap: 25px;
-        }
-        .contact-item {
-            display: flex;
+            border-radius: 50px;
+            font-size: 14px;
+            font-weight: 600;
+            display: inline-flex;
             align-items: center;
-            gap: 15px;
+            gap: 8px;
         }
-        .contact-icon {
-            width: 50px;
-            height: 50px;
-            border-radius: 50%;
-            background-color: rgba(108, 99, 255, 0.1);
-            color: var(--primary);
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            font-size: 1.2rem;
+
+        .status-active {
+            background: rgba(16, 185, 129, 0.15);
+            color: var(--secondary);
         }
-        .contact-text h4 {
-            font-size: 1.2rem;
-            margin-bottom: 5px;
+
+        .status-inactive {
+            background: rgba(239, 68, 68, 0.15);
+            color: var(--danger);
         }
-        .contact-text p {
-            color: var(--gray);
-        }
-        .contact-form {
-            background-color: white;
-            padding: 40px;
-            border-radius: 15px;
-            box-shadow: var(--shadow);
-        }
-        .form-group {
-            margin-bottom: 25px;
-        }
-        .form-group label {
-            display: block;
-            margin-bottom: 8px;
-            font-weight: 500;
-            color: var(--dark);
-        }
-        .form-control {
-            width: 100%;
-            padding: 14px 18px;
-            border: 1px solid #ddd;
-            border-radius: 10px;
-            font-family: 'Poppins', sans-serif;
-            transition: var(--transition);
-        }
-        .form-control:focus {
-            outline: none;
-            border-color: var(--primary);
-            box-shadow: 0 0 0 3px rgba(108, 99, 255, 0.1);
-        }
-        textarea.form-control {
-            min-height: 150px;
-            resize: vertical;
-        }
-        .success-message {
-            background-color: #e8f5e9;
-            color: var(--success);
-            padding: 15px;
-            border-radius: 10px;
+
+        .location-data {
             margin-top: 20px;
-            text-align: center;
-            display: none;
         }
-        /* Footer */
-        footer {
-            background-color: var(--dark);
-            color: white;
-            padding: 60px 0 30px;
-        }
-        .footer-content {
+
+        .data-row {
             display: flex;
             justify-content: space-between;
-            align-items: center;
-            margin-bottom: 40px;
+            padding: 12px 0;
+            border-bottom: 1px solid var(--border);
         }
-        .social-links {
-            display: flex;
-            gap: 20px;
+
+        .data-label {
+            color: var(--gray);
+            font-weight: 500;
         }
-        .social-link {
-            width: 45px;
-            height: 45px;
-            border-radius: 50%;
-            background-color: rgba(255, 255, 255, 0.1);
-            color: white;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            text-decoration: none;
-            transition: var(--transition);
-        }
-        .social-link:hover {
-            background-color: var(--primary);
-            transform: translateY(-5px);
-        }
-        /* Resume Download Section */
-        .resume-section {
-            text-align: center;
-            padding: 30px 0;
-            margin: 30px 0;
-            border-top: 1px solid rgba(255, 255, 255, 0.1);
-            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
-        }
-        .resume-section h3 {
-            font-size: 1.5rem;
-            margin-bottom: 20px;
-            color: white;
-        }
-        .resume-desc {
-            color: rgba(255, 255, 255, 0.7);
-            max-width: 500px;
-            margin: 0 auto 25px;
-            font-size: 0.95rem;
-        }
-        .resume-btn {
-            background-color: var(--primary);
-            color: white;
-            padding: 15px 35px;
-            border-radius: 50px;
+
+        .data-value {
             font-weight: 600;
-            font-size: 1rem;
-            text-decoration: none;
+            color: var(--dark);
+        }
+
+        .btn {
+            padding: 14px 28px;
+            border-radius: 10px;
+            border: none;
+            font-weight: 600;
+            font-size: 16px;
+            cursor: pointer;
+            transition: all 0.3s;
             display: inline-flex;
             align-items: center;
             gap: 10px;
-            transition: var(--transition);
-            border: none;
+        }
+
+        .btn-primary {
+            background: var(--primary);
+            color: white;
+        }
+
+        .btn-primary:hover {
+            background: var(--primary-dark);
+            transform: translateY(-2px);
+        }
+
+        .btn-secondary {
+            background: var(--light);
+            color: var(--dark);
+            border: 2px solid var(--border);
+        }
+
+        .btn-secondary:hover {
+            background: #e5e7eb;
+        }
+
+        .btn-danger {
+            background: var(--danger);
+            color: white;
+        }
+
+        .btn-danger:hover {
+            background: #dc2626;
+        }
+
+        .btn-success {
+            background: var(--secondary);
+            color: white;
+        }
+
+        .btn-success:hover {
+            background: #0da271;
+        }
+
+        .btn-group {
+            display: flex;
+            gap: 15px;
+            margin-top: 20px;
+        }
+
+        #map {
+            height: 400px;
+            border-radius: 15px;
+            overflow: hidden;
+            margin-top: 20px;
+        }
+
+        /* Dashboard Tab */
+        .dashboard-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 20px;
+            margin-bottom: 30px;
+        }
+
+        .stat-card {
+            background: white;
+            border-radius: 15px;
+            padding: 25px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
+            border-left: 5px solid var(--primary);
+        }
+
+        .stat-card:nth-child(2) {
+            border-left-color: var(--secondary);
+        }
+
+        .stat-card:nth-child(3) {
+            border-left-color: var(--warning);
+        }
+
+        .stat-card:nth-child(4) {
+            border-left-color: var(--danger);
+        }
+
+        .stat-value {
+            font-size: 32px;
+            font-weight: 700;
+            color: var(--dark);
+            margin: 10px 0;
+        }
+
+        .stat-label {
+            color: var(--gray);
+            font-size: 14px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .devices-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 20px;
+            background: white;
+            border-radius: 15px;
+            overflow: hidden;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
+        }
+
+        .devices-table th {
+            background: var(--light);
+            padding: 18px 20px;
+            text-align: left;
+            font-weight: 600;
+            color: var(--dark);
+            border-bottom: 2px solid var(--border);
+        }
+
+        .devices-table td {
+            padding: 18px 20px;
+            border-bottom: 1px solid var(--border);
+        }
+
+        .device-status {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            padding: 6px 12px;
+            border-radius: 50px;
+            font-size: 14px;
+        }
+
+        .online {
+            background: rgba(16, 185, 129, 0.15);
+            color: var(--secondary);
+        }
+
+        .offline {
+            background: rgba(239, 68, 68, 0.15);
+            color: var(--danger);
+        }
+
+        .history-container {
+            margin-top: 30px;
+        }
+
+        .history-list {
+            max-height: 300px;
+            overflow-y: auto;
+            border: 1px solid var(--border);
+            border-radius: 10px;
+            margin-top: 15px;
+        }
+
+        .history-item {
+            padding: 15px 20px;
+            border-bottom: 1px solid var(--border);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .history-item:last-child {
+            border-bottom: none;
+        }
+
+        .history-time {
+            font-weight: 600;
+            color: var(--dark);
+        }
+
+        .history-location {
+            color: var(--gray);
+        }
+
+        /* Settings Tab */
+        .settings-grid {
+            display: grid;
+            grid-template-columns: 300px 1fr;
+            gap: 30px;
+        }
+
+        .settings-menu {
+            background: var(--light);
+            border-radius: 15px;
+            padding: 0;
+            overflow: hidden;
+        }
+
+        .settings-item {
+            padding: 20px;
             cursor: pointer;
+            border-bottom: 1px solid var(--border);
+            transition: all 0.3s;
+            display: flex;
+            align-items: center;
+            gap: 15px;
         }
-        .resume-btn:hover {
-            background-color: var(--primary-dark);
-            transform: translateY(-5px);
-            box-shadow: 0 10px 25px rgba(108, 99, 255, 0.3);
+
+        .settings-item.active {
+            background: white;
+            color: var(--primary);
+            font-weight: 600;
         }
-        .copyright {
-            text-align: center;
-            color: rgba(255, 255, 255, 0.6);
-            padding-top: 30px;
+
+        .settings-item:hover {
+            background: rgba(37, 99, 235, 0.08);
         }
-        /* Animations */
-        @keyframes fadeUp {
-            from {
-                opacity: 0;
-                transform: translateY(30px);
-            }
-            to {
-                opacity: 1;
-                transform: translateY(0);
-            }
+
+        .settings-content {
+            background: white;
+            border-radius: 15px;
+            padding: 30px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
         }
-        @keyframes float {
-            0%, 100% {
-                transform: translateY(0);
-            }
-            50% {
-                transform: translateY(-20px);
-            }
+
+        .form-group {
+            margin-bottom: 25px;
         }
-        .fade-in {
+
+        .form-group label {
+            display: block;
+            margin-bottom: 10px;
+            font-weight: 600;
+            color: var(--dark);
+        }
+
+        .form-control {
+            width: 100%;
+            padding: 15px;
+            border: 2px solid var(--border);
+            border-radius: 10px;
+            font-size: 16px;
+            transition: all 0.3s;
+        }
+
+        .form-control:focus {
+            outline: none;
+            border-color: var(--primary);
+            box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.1);
+        }
+
+        .toggle-switch {
+            position: relative;
+            display: inline-block;
+            width: 60px;
+            height: 30px;
+        }
+
+        .toggle-switch input {
             opacity: 0;
-            transform: translateY(30px);
-            transition: opacity 0.8s, transform 0.8s;
+            width: 0;
+            height: 0;
         }
-        .fade-in.visible {
-            opacity: 1;
-            transform: translateY(0);
+
+        .toggle-slider {
+            position: absolute;
+            cursor: pointer;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background-color: #ccc;
+            transition: .4s;
+            border-radius: 34px;
         }
-        /* Responsive Styles */
-        @media (max-width: 992px) {
-            .about-content,
-            .contact-container {
-                grid-template-columns: 1fr;
-            }
-           
-            .hero h1 {
-                font-size: 3rem;
-            }
-           
-            .projects-container {
-                grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
-            }
+
+        .toggle-slider:before {
+            position: absolute;
+            content: "";
+            height: 22px;
+            width: 22px;
+            left: 4px;
+            bottom: 4px;
+            background-color: white;
+            transition: .4s;
+            border-radius: 50%;
         }
+
+        input:checked + .toggle-slider {
+            background-color: var(--secondary);
+        }
+
+        input:checked + .toggle-slider:before {
+            transform: translateX(30px);
+        }
+
+        .radio-group {
+            display: flex;
+            gap: 20px;
+            margin-top: 10px;
+        }
+
+        .radio-option {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        /* Footer */
+        footer {
+            text-align: center;
+            padding: 20px;
+            color: var(--gray);
+            border-top: 1px solid var(--border);
+            margin-top: 30px;
+        }
+
+        /* Responsive */
         @media (max-width: 768px) {
-            .nav-links {
-                position: fixed;
-                top: 70px;
-                left: 0;
-                width: 100%;
-                background-color: white;
-                flex-direction: column;
-                align-items: center;
-                padding: 20px 0;
-                box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
-                transform: translateY(-100%);
-                opacity: 0;
-                transition: var(--transition);
-                z-index: 999;
-            }
-           
-            .nav-links.active {
-                transform: translateY(0);
-                opacity: 1;
-            }
-           
-            .nav-links li {
-                margin: 15px 0;
-            }
-           
-            .mobile-toggle {
-                display: block;
-            }
-           
-            .hero h1 {
-                font-size: 2.5rem;
-            }
-           
-            .hero p {
-                font-size: 1.1rem;
-            }
-           
-            .section-title h2 {
-                font-size: 2.2rem;
-            }
-           
-            .chat-window {
-                width: 300px;
-                height: 450px;
-                right: -20px;
-            }
-           
-            .skills-container {
+            .tracker-container {
                 grid-template-columns: 1fr;
             }
-           
-            .footer-content {
+            
+            .dashboard-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .settings-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .btn-group {
                 flex-direction: column;
-                text-align: center;
-                gap: 30px;
             }
-        }
-        @media (max-width: 576px) {
-            section {
-                padding: 70px 0;
-            }
-           
-            .hero {
-                text-align: center;
-            }
-           
-            .hero-btns {
-                flex-direction: column;
-                align-items: center;
-            }
-           
-            .btn {
-                width: 100%;
-                max-width: 250px;
-            }
-           
-            .chat-window {
-                width: calc(100vw - 40px);
-                right: 20px;
-            }
-           
-            .contact-form {
-                padding: 30px 20px;
-            }
-           
-            .resume-btn {
-                padding: 12px 25px;
-                font-size: 0.9rem;
+            
+            .devices-table {
+                display: block;
+                overflow-x: auto;
             }
         }
     </style>
 </head>
 <body>
-    <!-- Header & Navigation -->
-    <header>
-        <div class="container">
-            <nav>
-                <a href="#" class="logo">Telugu Chandra Sekhar<span>.</span></a>
-                <ul class="nav-links">
-                    <li><a href="#home">Home</a></li>
-                    <li><a href="#about">About</a></li>
-                    <li><a href="#projects">Projects</a></li>
-                    <li><a href="#contact">Contact</a></li>
-                </ul>
-                <div class="mobile-toggle">
-                    <i class="fas fa-bars"></i>
-                </div>
-            </nav>
+    <div class="container">
+        <header>
+            <div class="logo">
+                <i class="fas fa-map-marker-alt"></i>
+                <h1>Location Tracker</h1>
+            </div>
+            <div>
+                <span id="current-time" class="time-display">--:--:--</span>
+            </div>
+        </header>
+
+        <div class="tabs">
+            <div class="tab active" data-tab="tracker">
+                <i class="fas fa-satellite"></i> Live Tracker
+            </div>
+            <div class="tab" data-tab="dashboard">
+                <i class="fas fa-tachometer-alt"></i> Dashboard
+            </div>
+            <div class="tab" data-tab="history">
+                <i class="fas fa-history"></i> History
+            </div>
+            <div class="tab" data-tab="settings">
+                <i class="fas fa-cog"></i> Settings
+            </div>
         </div>
-    </header>
-    <!-- Hero Section -->
-    <section class="hero" id="home">
-        <div class="container">
-            <div class="hero-content">
-                <h1>Hello, I'm Telugu Chandra Sekhar</h1>
-                <p>Student at NRI INSTITUTE OF TECHNOLOGY with a proven track record of optimizing project outcomes. Skilled in strategic project management and team leadership. Seeking a challenging executive role to leverage technical expertise and drive engineering excellence.</p>
-                <div class="hero-btns">
-                    <a href="#projects" class="btn btn-primary">View My Work</a>
-                    <a href="#contact" class="btn btn-secondary">Get In Touch</a>
+
+        <!-- Tracker Tab -->
+        <div class="tab-content active" id="tracker">
+            <div class="tracker-container">
+                <div class="tracker-card">
+                    <div class="card-header">
+                        <div class="card-title">Tracking Status</div>
+                        <div id="tracking-status" class="status-badge status-inactive">
+                            <i class="fas fa-circle"></i> Inactive
+                        </div>
+                    </div>
+                    
+                    <div class="location-data">
+                        <div class="data-row">
+                            <span class="data-label">Latitude</span>
+                            <span id="latitude" class="data-value">--</span>
+                        </div>
+                        <div class="data-row">
+                            <span class="data-label">Longitude</span>
+                            <span id="longitude" class="data-value">--</span>
+                        </div>
+                        <div class="data-row">
+                            <span class="data-label">Accuracy</span>
+                            <span id="accuracy" class="data-value">-- meters</span>
+                        </div>
+                        <div class="data-row">
+                            <span class="data-label">Speed</span>
+                            <span id="speed" class="data-value">-- km/h</span>
+                        </div>
+                        <div class="data-row">
+                            <span class="data-label">Altitude</span>
+                            <span id="altitude" class="data-value">-- meters</span>
+                        </div>
+                        <div class="data-row">
+                            <span class="data-label">Last Update</span>
+                            <span id="last-update" class="data-value">Never</span>
+                        </div>
+                        <div class="data-row">
+                            <span class="data-label">Battery</span>
+                            <span id="battery-level" class="data-value">--%</span>
+                        </div>
+                    </div>
+
+                    <div class="btn-group">
+                        <button id="start-tracking" class="btn btn-success">
+                            <i class="fas fa-play"></i> Start Tracking
+                        </button>
+                        <button id="stop-tracking" class="btn btn-danger" disabled>
+                            <i class="fas fa-stop"></i> Stop Tracking
+                        </button>
+                        <button id="share-location" class="btn btn-secondary">
+                            <i class="fas fa-share"></i> Share Location
+                        </button>
+                    </div>
+                </div>
+
+                <div class="tracker-card">
+                    <div class="card-header">
+                        <div class="card-title">Device Information</div>
+                    </div>
+                    
+                    <div class="location-data">
+                        <div class="data-row">
+                            <span class="data-label">Device ID</span>
+                            <span id="device-id" class="data-value">--</span>
+                        </div>
+                        <div class="data-row">
+                            <span class="data-label">Platform</span>
+                            <span id="platform" class="data-value">--</span>
+                        </div>
+                        <div class="data-row">
+                            <span class="data-label">Connection</span>
+                            <span id="connection" class="data-value">--</span>
+                        </div>
+                        <div class="data-row">
+                            <span class="data-label">User Agent</span>
+                            <span id="user-agent" class="data-value">--</span>
+                        </div>
+                        <div class="data-row">
+                            <span class="data-label">Screen Size</span>
+                            <span id="screen-size" class="data-value">--</span>
+                        </div>
+                        <div class="data-row">
+                            <span class="data-label">Memory</span>
+                            <span id="memory" class="data-value">--</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="card-title" style="margin-top: 30px;">Live Location Map</div>
+            <div id="map"></div>
+        </div>
+
+        <!-- Dashboard Tab -->
+        <div class="tab-content" id="dashboard">
+            <div class="dashboard-grid">
+                <div class="stat-card">
+                    <div class="stat-label">Total Tracking Time</div>
+                    <div class="stat-value" id="total-time">00:00:00</div>
+                    <i class="fas fa-clock" style="color: var(--primary); font-size: 24px;"></i>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-label">Distance Traveled</div>
+                    <div class="stat-value" id="total-distance">0 km</div>
+                    <i class="fas fa-road" style="color: var(--secondary); font-size: 24px;"></i>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-label">Locations Recorded</div>
+                    <div class="stat-value" id="locations-count">0</div>
+                    <i class="fas fa-map-pin" style="color: var(--warning); font-size: 24px;"></i>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-label">Current Speed</div>
+                    <div class="stat-value" id="current-speed">0 km/h</div>
+                    <i class="fas fa-tachometer-alt" style="color: var(--danger); font-size: 24px;"></i>
+                </div>
+            </div>
+
+            <div class="card-title">Connected Devices</div>
+            <table class="devices-table">
+                <thead>
+                    <tr>
+                        <th>Device ID</th>
+                        <th>Status</th>
+                        <th>Last Seen</th>
+                        <th>Location</th>
+                        <th>Battery</th>
+                    </tr>
+                </thead>
+                <tbody id="devices-list">
+                    <!-- Will be populated by JavaScript -->
+                </tbody>
+            </table>
+
+            <div class="history-container">
+                <div class="card-title">Recent Locations</div>
+                <div class="history-list" id="recent-locations">
+                    <!-- Will be populated by JavaScript -->
                 </div>
             </div>
         </div>
-       
-        <!-- Floating elements -->
-        <div class="floating-elements">
-            <div class="floating-element"></div>
-            <div class="floating-element"></div>
-            <div class="floating-element"></div>
-        </div>
-    </section>
-    <!-- About Section -->
-    <section id="about">
-        <div class="container">
-            <div class="section-title fade-in">
-                <h2>About Me</h2>
-                <p>Get to know more about my skills, experience and passions</p>
-            </div>
-           
-            <div class="about-content">
-                <div class="about-img fade-in">
-                    <img src="IMG-22-WA0055.png" alt="Telugu Chandra Sekhar">
-                </div>
-                <div class="about-text fade-in">
-                    <h3>Data Science Student</h3>
-                    <p>I'm a passionate software engineer specializing in Data Science, with experience in internships focused on Python development and Power BI. I have a strong foundation in programming and project optimization.</p>
-                    <p>My expertise includes developing efficient solutions, collaborating in teams, and applying cost-effective strategies in real-world projects. I'm currently pursuing my engineering degree with a focus on data-driven techniques.</p>
-                   
-                    <div class="skills-container">
-                        <div class="skill-item">
-                            <div class="skill-header">
-                                <span class="skill-name">Python Programming</span>
-                                <span class="skill-percent">90%</span>
-                            </div>
-                            <div class="skill-bar">
-                                <div class="skill-progress" data-width="90"></div>
-                            </div>
-                        </div>
-                        <div class="skill-item">
-                            <div class="skill-header">
-                                <span class="skill-name">Java Programming</span>
-                                <span class="skill-percent">85%</span>
-                            </div>
-                            <div class="skill-bar">
-                                <div class="skill-progress" data-width="85"></div>
-                            </div>
-                        </div>
-                        <div class="skill-item">
-                            <div class="skill-header">
-                                <span class="skill-name">C Programming</span>
-                                <span class="skill-percent">80%</span>
-                            </div>
-                            <div class="skill-bar">
-                                <div class="skill-progress" data-width="80"></div>
-                            </div>
-                        </div>
-                        <div class="skill-item">
-                            <div class="skill-header">
-                                <span class="skill-name">Communication & Time-Management</span>
-                                <span class="skill-percent">95%</span>
-                            </div>
-                            <div class="skill-bar">
-                                <div class="skill-progress" data-width="95"></div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </section>
-    <!-- Projects Section -->
-    <section id="projects">
-        <div class="container">
-            <div class="section-title fade-in">
-                <h2>My Experience & Projects</h2>
-                <p>A showcase of my recent internships and development contributions</p>
-            </div>
-           
-            <div class="projects-container">
-                <!-- Project 1 -->
-                <div class="project-card fade-in">
-                    <div class="project-img">
-                        <img src="Screenshot 2025-12-08 182240.png" alt="Upstricks Internship">
-                    </div>
-                    <div class="project-content">
-                        <h3>Upstricks Intern</h3>
-                        <p>Developed Python-based solutions for various projects. Participated in hackathons, contributing to innovative software development. Collaborated with teams to design and implement efficient code.</p>
-                        <div class="project-tech">
-                            <span class="tech-tag">Python</span>
-                            <span class="tech-tag">Hackathons</span>
-                            <span class="tech-tag">Team Collaboration</span>
-                        </div>
-                        <div class="project-links">
-                            <a href="#" class="project-link">More Details <i class="fas fa-external-link-alt"></i></a>
-                        </div>
-                    </div>
-                </div>
-               
-                <!-- Project 2 -->
-                <div class="project-card fade-in">
-                    <div class="project-img">
-                        <img src="Screenshot 2025-12-08 182425.png" alt="Power BI Internship">
-                    </div>
-                    <div class="project-content">
-                        <h3>Power BI Intern, Cognifyz</h3>
-                        <p>Implemented cost-effective solutions, resulting in a 20% reduction in project expenses. Streamlined project workflows, enhancing overall efficiency. Gained immersive knowledge at industry level.</p>
-                        <div class="project-tech">
-                            <span class="tech-tag">Power BI</span>
-                            <span class="tech-tag">Workflow Optimization</span>
-                            <span class="tech-tag">Cost Reduction</span>
-                        </div>
-                        <div class="project-links">
-                            <a href="#" class="project-link">More Details <i class="fas fa-external-link-alt"></i></a>
-                        </div>
-                    </div>
-                </div>
-                <!--Project 3-->
-                <div class="project-card fade in">
-                    <div class="project-img">
-                        <img src="elevate labs.jpg" alt="Elevate Labs Internship">
-                    </div> 
-                    <div class="project-content">
-                        <h3>Python Developer Internship,Elevate Labs</h3>
-                        <p>This Internship provided an opportunity to apply foundational Python knowledge to real-world applications and modern development workflows.</p>
-                        <div class="project-tech">
-                            <span class="tech-tag">Voice Assisstant</span>
-                            <span class="tech-tag">More Efficiency</span>
-                        </div>
-                        <div class="project-links">
-                            <a href="#" class="project-link">More Details <i class="fas fa-external-link-alt"></i></a>
-                        </div>
+
+        <!-- History Tab -->
+        <div class="tab-content" id="history">
+            <div class="tracker-card">
+                <div class="card-header">
+                    <div class="card-title">Location History</div>
+                    <div class="btn-group" style="margin: 0;">
+                        <button id="export-history" class="btn btn-secondary">
+                            <i class="fas fa-download"></i> Export
+                        </button>
+                        <button id="clear-history" class="btn btn-danger">
+                            <i class="fas fa-trash"></i> Clear
+                        </button>
                     </div>
                 </div>
                 
-               
-            </div>
-        </div>
-    </section>
-    <!-- Contact Section -->
-    <section id="contact">
-        <div class="container">
-            <div class="section-title fade-in">
-                <h2>Get In Touch</h2>
-                <p>Have a project in mind? Let's work together to bring it to life</p>
-            </div>
-           
-            <div class="contact-container">
-                <div class="contact-info">
-                    <div class="contact-item fade-in">
-                        <div class="contact-icon">
-                            <i class="fas fa-envelope"></i>
-                        </div>
-                        <div class="contact-text">
-                            <h4>Email</h4>
-                            <p>teluguchandrasekhar04@gmail.com</p>
-                        </div>
-                    </div>
-                   
-                    <div class="contact-item fade-in">
-                        <div class="contact-icon">
-                            <i class="fas fa-phone"></i>
-                        </div>
-                        <div class="contact-text">
-                            <h4>Phone</h4>
-                            <p>+91-6305412922</p>
-                        </div>
-                    </div>
-                   
-                    <div class="contact-item fade-in">
-                        <div class="contact-icon">
-                            <i class="fas fa-map-marker-alt"></i>
-                        </div>
-                        <div class="contact-text">
-                            <h4>Location</h4>
-                            <p>Gokavaram(v), Kothapalli(m), Kurnool(Dist)</p>
-                        </div>
+                <div class="form-group">
+                    <label>Date Range</label>
+                    <div style="display: flex; gap: 15px;">
+                        <input type="date" id="start-date" class="form-control">
+                        <input type="date" id="end-date" class="form-control">
+                        <button id="filter-history" class="btn btn-primary">
+                            <i class="fas fa-filter"></i> Filter
+                        </button>
                     </div>
                 </div>
-               
-                <div class="contact-form fade-in">
-                    <form id="contactForm">
+
+                <div id="history-chart" style="height: 300px; margin: 30px 0; background: var(--light); border-radius: 10px; display: flex; align-items: center; justify-content: center; color: var(--gray);">
+                    Chart will appear here
+                </div>
+
+                <div class="history-list" id="full-history-list" style="max-height: 400px;">
+                    <!-- Will be populated by JavaScript -->
+                </div>
+            </div>
+        </div>
+
+        <!-- Settings Tab -->
+        <div class="tab-content" id="settings">
+            <div class="settings-grid">
+                <div class="settings-menu">
+                    <div class="settings-item active" data-setting="general">
+                        <i class="fas fa-sliders-h"></i> General Settings
+                    </div>
+                    <div class="settings-item" data-setting="privacy">
+                        <i class="fas fa-shield-alt"></i> Privacy & Security
+                    </div>
+                    <div class="settings-item" data-setting="notifications">
+                        <i class="fas fa-bell"></i> Notifications
+                    </div>
+                    <div class="settings-item" data-setting="sharing">
+                        <i class="fas fa-share-alt"></i> Sharing
+                    </div>
+                    <div class="settings-item" data-setting="about">
+                        <i class="fas fa-info-circle"></i> About
+                    </div>
+                </div>
+
+                <div class="settings-content">
+                    <!-- General Settings -->
+                    <div id="general-settings" class="settings-panel">
+                        <h3 style="margin-bottom: 25px; color: var(--dark);">General Settings</h3>
+                        
                         <div class="form-group">
-                            <label for="name">Full Name</label>
-                            <input type="text" id="name" class="form-control" placeholder="Enter your name" required>
+                            <label>Tracking Interval (seconds)</label>
+                            <input type="range" id="tracking-interval" min="1" max="60" value="5" class="form-control">
+                            <div style="display: flex; justify-content: space-between; margin-top: 5px;">
+                                <span>1s</span>
+                                <span id="interval-value">5s</span>
+                                <span>60s</span>
+                            </div>
                         </div>
-                       
+
                         <div class="form-group">
-                            <label for="email">Email Address</label>
-                            <input type="email" id="email" class="form-control" placeholder="Enter your email" required>
+                            <label>Location Accuracy</label>
+                            <select id="accuracy-level" class="form-control">
+                                <option value="high">High Accuracy (GPS)</option>
+                                <option value="balanced">Balanced (Wi-Fi & Cell)</option>
+                                <option value="low">Low Power (Cell only)</option>
+                            </select>
                         </div>
-                       
+
                         <div class="form-group">
-                            <label for="message">Your Message</label>
-                            <textarea id="message" class="form-control" placeholder="Tell me about your project" required></textarea>
+                            <label style="display: flex; justify-content: space-between; align-items: center;">
+                                <span>Background Tracking</span>
+                                <label class="toggle-switch">
+                                    <input type="checkbox" id="background-tracking">
+                                    <span class="toggle-slider"></span>
+                                </label>
+                            </label>
+                            <small style="color: var(--gray);">Allow tracking when app is in background</small>
                         </div>
-                       
-                        <button type="submit" class="btn btn-primary" style="width: 100%;">Send Message</button>
-                    </form>
-                    <div id="successMessage" class="success-message">
-                        <i class="fas fa-check-circle"></i> Your message has been sent successfully!
+
+                        <div class="form-group">
+                            <label>Map Type</label>
+                            <div class="radio-group">
+                                <label class="radio-option">
+                                    <input type="radio" name="map-type" value="roadmap" checked> Roadmap
+                                </label>
+                                <label class="radio-option">
+                                    <input type="radio" name="map-type" value="satellite"> Satellite
+                                </label>
+                                <label class="radio-option">
+                                    <input type="radio" name="map-type" value="hybrid"> Hybrid
+                                </label>
+                            </div>
+                        </div>
+
+                        <button id="save-settings" class="btn btn-primary">
+                            <i class="fas fa-save"></i> Save Settings
+                        </button>
                     </div>
+
+                    <!-- Other settings panels would go here -->
                 </div>
             </div>
         </div>
-    </section>
-    <!-- Footer -->
-    <footer>
-        <div class="container">
-            <div class="footer-content">
-                <div class="logo">Telugu Chandra Sekhar<span>.</span></div>
-                <div class="social-links">
-                    <a href="https://github.com/Chandrasekha-prog" class="social-link"><i class="fab fa-github"></i></a>
-                    <a href="https://www.linkedin.com/in/chandra-sekhar-telugu-4296b3327/" class="social-link"><i class="fab fa-linkedin-in"></i></a>
-                </div>
-            </div>
-           
-            <!-- ADDED RESUME DOWNLOAD SECTION -->
-            <div class="resume-section fade-in">
-                <h3>Download My Resume</h3>
-                <p class="resume-desc">Get a complete PDF version of my resume with detailed information about my education, skills, and work experience.</p>
-                <a href="Telugu_Chandra_Sekhar_ATS_Resume.pdf" class="resume-btn" download>
-                    <i class="fas fa-download"></i> Download Resume
-                </a>
-                <p style="color: rgba(255,255,255,0.5); font-size: 0.85rem; margin-top: 15px;">
-                    <i class="fas fa-file-pdf"></i> PDF Format • Updated December 2025
-                </p>
-            </div>
-           
-            <div class="copyright">
-                <p>&copy; 2025 Telugu Chandra Sekhar. All Rights Reserved.</p>
-            </div>
-        </div>
-    </footer>
-    <!-- Chat Interface -->
-    <div class="chat-container">
-        <button class="chat-toggle" id="chatToggle">
-            <i class="fas fa-comment-dots"></i>
-        </button>
-       
-        <div class="chat-window" id="chatWindow">
-            <div class="chat-header">
-                <h3>Chat with Telugu Chandra Sekhar</h3>
-                <button class="close-chat" id="closeChat">
-                    <i class="fas fa-times"></i>
-                </button>
-            </div>
-           
-            <div class="chat-body" id="chatBody">
-                <div class="chat-message bot-message">
-                    Hello! I'm Telugu Chandra Sekhar. How can I help you today? You can ask me about my work, projects, or skills.
-                </div>
-                <div class="chat-message bot-message">
-                    Try asking me questions like:
-                    <div class="quick-questions">
-                        <button class="quick-question" data-question="What technologies do you use?">What technologies do you use?</button>
-                        <button class="quick-question" data-question="Tell me about your experience">Tell me about your experience</button>
-                        <button class="quick-question" data-question="What are your recent projects?">What are your recent projects?</button>
-                        <button class="quick-question" data-question="How can I contact you?">How can I contact you?</button>
-                    </div>
-                </div>
-            </div>
-           
-            <div class="chat-input-container">
-                <input type="text" class="chat-input" id="chatInput" placeholder="Type your message...">
-                <button class="send-btn" id="sendBtn">
-                    <i class="fas fa-paper-plane"></i>
-                </button>
-            </div>
-        </div>
+
+        <footer>
+            <p>Location Tracker &copy; 2024 | Use responsibly and respect privacy laws</p>
+            <p style="font-size: 12px; margin-top: 5px;">This app works best on mobile devices with GPS</p>
+        </footer>
     </div>
+
     <script>
-        // DOM Elements
-        const mobileToggle = document.querySelector('.mobile-toggle');
-        const navLinks = document.querySelector('.nav-links');
-        const chatToggle = document.getElementById('chatToggle');
-        const chatWindow = document.getElementById('chatWindow');
-        const closeChat = document.getElementById('closeChat');
-        const chatBody = document.getElementById('chatBody');
-        const chatInput = document.getElementById('chatInput');
-        const sendBtn = document.getElementById('sendBtn');
-        const quickQuestions = document.querySelectorAll('.quick-question');
-        const contactForm = document.getElementById('contactForm');
-        const successMessage = document.getElementById('successMessage');
-        const skillProgressBars = document.querySelectorAll('.skill-progress');
-        const fadeElements = document.querySelectorAll('.fade-in');
-        // Mobile Navigation Toggle
-        mobileToggle.addEventListener('click', () => {
-            navLinks.classList.toggle('active');
-            mobileToggle.innerHTML = navLinks.classList.contains('active')
-                ? '<i class="fas fa-times"></i>'
-                : '<i class="fas fa-bars"></i>';
+        // Global variables
+        let map = null;
+        let marker = null;
+        let watchId = null;
+        let trackingInterval = 5000; // 5 seconds
+        let locationsHistory = [];
+        let totalDistance = 0;
+        let trackingStartTime = null;
+        let currentPosition = null;
+
+        // Initialize the application
+        document.addEventListener('DOMContentLoaded', function() {
+            initializeApp();
+            setupEventListeners();
+            updateCurrentTime();
+            setInterval(updateCurrentTime, 1000);
         });
-        // Close mobile menu when clicking a link
-        document.querySelectorAll('.nav-links a').forEach(link => {
-            link.addEventListener('click', () => {
-                navLinks.classList.remove('active');
-                mobileToggle.innerHTML = '<i class="fas fa-bars"></i>';
+
+        function initializeApp() {
+            // Initialize map
+            map = L.map('map').setView([0, 0], 2);
+            L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+                attribution: '© OpenStreetMap contributors'
+            }).addTo(map);
+
+            // Load saved data from localStorage
+            loadSavedData();
+            
+            // Update device info
+            updateDeviceInfo();
+            
+            // Load mock devices for demo
+            loadMockDevices();
+            
+            // Load mock history for demo
+            loadMockHistory();
+        }
+
+        function setupEventListeners() {
+            // Tab switching
+            document.querySelectorAll('.tab').forEach(tab => {
+                tab.addEventListener('click', () => {
+                    const tabId = tab.dataset.tab;
+                    switchTab(tabId);
+                });
             });
-        });
-        // Chat Interface
-        chatToggle.addEventListener('click', () => {
-            chatWindow.classList.toggle('active');
-        });
-        closeChat.addEventListener('click', () => {
-            chatWindow.classList.remove('active');
-        });
-        // Chat bot responses
-        const botResponses = {
-            "hello": "Hello! How can I help you today? Feel free to ask me about my projects, skills, or experience.",
-            "hi": "Hi there! What would you like to know about my work?",
-            "what technologies do you use?": "I work with programming languages like C, Java, and Python. I also have skills in communication and time-management.",
-            "tell me about your experience": "I have internship experience at Upstricks (Python development) and Cognifyz (Power BI). I'm specializing in Data Science.",
-            "what are your recent projects?": "My recent work includes Python-based solutions and Power BI implementations for cost reduction and efficiency. Check the Experience section!",
-            "how can i contact you?": "You can reach me via email at teluguchandrasekhar04@gmail.com or through the contact form on this website.",
-            "what is your design process?": "My process involves strategic project management, team collaboration, and optimizing outcomes with data-driven techniques.",
-            "are you available for freelance work?": "Yes, I'm open to opportunities. Contact me with details about your project.",
-            "what are your rates?": "Rates depend on project scope. Let's discuss your needs for a tailored quote.",
-            "default": "I'm not sure how to answer that. You can ask me about my skills, experience, or how to contact me. Try the quick questions!"
-        };
-        // Function to add message to chat
-        function addMessage(text, isUser = false) {
-            const messageDiv = document.createElement('div');
-            messageDiv.classList.add('chat-message');
-            messageDiv.classList.add(isUser ? 'user-message' : 'bot-message');
-            messageDiv.textContent = text;
-            chatBody.appendChild(messageDiv);
-            chatBody.scrollTop = chatBody.scrollHeight;
+
+            // Settings menu
+            document.querySelectorAll('.settings-item').forEach(item => {
+                item.addEventListener('click', () => {
+                    document.querySelectorAll('.settings-item').forEach(i => i.classList.remove('active'));
+                    item.classList.add('active');
+                    // In a real app, you would switch settings panels here
+                });
+            });
+
+            // Tracking buttons
+            document.getElementById('start-tracking').addEventListener('click', startTracking);
+            document.getElementById('stop-tracking').addEventListener('click', stopTracking);
+            document.getElementById('share-location').addEventListener('click', shareLocation);
+
+            // Settings
+            document.getElementById('tracking-interval').addEventListener('input', function() {
+                document.getElementById('interval-value').textContent = this.value + 's';
+                trackingInterval = this.value * 1000;
+            });
+
+            document.getElementById('save-settings').addEventListener('click', saveSettings);
+
+            // History buttons
+            document.getElementById('export-history').addEventListener('click', exportHistory);
+            document.getElementById('clear-history').addEventListener('click', clearHistory);
+            document.getElementById('filter-history').addEventListener('click', filterHistory);
         }
-        // Function to handle user messages
-        function handleUserMessage() {
-            const userText = chatInput.value.trim().toLowerCase();
-            if (!userText) return;
-           
-            addMessage(userText, true);
-            chatInput.value = '';
-           
-            // Simulate typing delay
-            setTimeout(() => {
-                let response = botResponses.default;
-               
-                // Check for matching responses
-                for (const key in botResponses) {
-                    if (userText.includes(key)) {
-                        response = botResponses[key];
-                        break;
-                    }
-                }
-               
-                addMessage(response);
-            }, 500);
-        }
-        // Send message on button click
-        sendBtn.addEventListener('click', handleUserMessage);
-        // Send message on Enter key
-        chatInput.addEventListener('keypress', (e) => {
-            if (e.key === 'Enter') {
-                handleUserMessage();
+
+        function switchTab(tabId) {
+            // Update active tab
+            document.querySelectorAll('.tab').forEach(tab => {
+                tab.classList.toggle('active', tab.dataset.tab === tabId);
+            });
+
+            // Update active content
+            document.querySelectorAll('.tab-content').forEach(content => {
+                content.classList.toggle('active', content.id === tabId);
+            });
+
+            // Refresh map size when switching to tracker tab
+            if (tabId === 'tracker' && map) {
+                setTimeout(() => map.invalidateSize(), 100);
             }
-        });
-        // Quick question buttons
-        quickQuestions.forEach(button => {
-            button.addEventListener('click', () => {
-                const question = button.getAttribute('data-question');
-                chatInput.value = question;
-                handleUserMessage();
-            });
-        });
-        // Contact Form Submission
-        contactForm.addEventListener('submit', (e) => {
-            e.preventDefault();
-           
-            // Get form values
-            const name = document.getElementById('name').value;
-            const email = document.getElementById('email').value;
-            const message = document.getElementById('message').value;
-           
-            // In a real application, you would send this data to a server
-            console.log('Form submitted:', { name, email, message });
-           
-            // Show success message
-            successMessage.style.display = 'block';
-            contactForm.reset();
-           
-            // Hide success message after 5 seconds
-            setTimeout(() => {
-                successMessage.style.display = 'none';
-            }, 5000);
-        });
-        // Animate skill bars on scroll
-        function animateSkillBars() {
-            skillProgressBars.forEach(bar => {
-                const width = bar.getAttribute('data-width');
-                bar.style.width = width + '%';
-            });
         }
-        // Check if element is in viewport
-        function isInViewport(element) {
-            const rect = element.getBoundingClientRect();
-            return (
-                rect.top <= (window.innerHeight || document.documentElement.clientHeight) * 0.8
+
+        function startTracking() {
+            if (watchId) return;
+
+            if (!navigator.geolocation) {
+                alert('Geolocation is not supported by your browser');
+                return;
+            }
+
+            // Request location permission
+            navigator.geolocation.getCurrentPosition(
+                (position) => {
+                    // Permission granted
+                    trackingStartTime = new Date();
+                    updateTrackingStatus(true);
+
+                    // Start watching position
+                    watchId = navigator.geolocation.watchPosition(
+                        updateLocation,
+                        handleLocationError,
+                        {
+                            enableHighAccuracy: document.getElementById('accuracy-level').value === 'high',
+                            maximumAge: 30000,
+                            timeout: 27000
+                        }
+                    );
+
+                    // Update buttons
+                    document.getElementById('start-tracking').disabled = true;
+                    document.getElementById('stop-tracking').disabled = false;
+
+                    // Start periodic updates for simulation
+                    startPeriodicUpdates();
+                },
+                (error) => {
+                    alert('Location access is required for tracking. Please enable location services.');
+                    console.error('Geolocation error:', error);
+                }
             );
         }
-        // Handle scroll animations
-        function handleScrollAnimations() {
-            // Animate skill bars when about section is in view
-            if (isInViewport(document.getElementById('about'))) {
-                animateSkillBars();
-            }
-           
-            // Handle fade-in elements
-            fadeElements.forEach(element => {
-                if (isInViewport(element)) {
-                    element.classList.add('visible');
+
+        function startPeriodicUpdates() {
+            // For demo purposes, simulate movement when tracking
+            if (window.demoInterval) clearInterval(window.demoInterval);
+            
+            window.demoInterval = setInterval(() => {
+                if (currentPosition) {
+                    // Simulate small movement for demo
+                    const simulatedPosition = {
+                        coords: {
+                            latitude: currentPosition.coords.latitude + (Math.random() - 0.5) * 0.001,
+                            longitude: currentPosition.coords.longitude + (Math.random() - 0.5) * 0.001,
+                            accuracy: currentPosition.coords.accuracy,
+                            altitude: currentPosition.coords.altitude,
+                            speed: Math.random() * 10,
+                            heading: Math.random() * 360
+                        },
+                        timestamp: Date.now()
+                    };
+                    
+                    updateLocation(simulatedPosition);
                 }
+            }, trackingInterval);
+        }
+
+        function stopTracking() {
+            if (watchId) {
+                navigator.geolocation.clearWatch(watchId);
+                watchId = null;
+            }
+            
+            if (window.demoInterval) {
+                clearInterval(window.demoInterval);
+                window.demoInterval = null;
+            }
+            
+            updateTrackingStatus(false);
+            
+            // Update buttons
+            document.getElementById('start-tracking').disabled = false;
+            document.getElementById('stop-tracking').disabled = true;
+        }
+
+        function updateLocation(position) {
+            currentPosition = position;
+            const coords = position.coords;
+            const timestamp = new Date(position.timestamp);
+
+            // Update UI
+            document.getElementById('latitude').textContent = coords.latitude.toFixed(6);
+            document.getElementById('longitude').textContent = coords.longitude.toFixed(6);
+            document.getElementById('accuracy').textContent = coords.accuracy ? `${Math.round(coords.accuracy)} meters` : '--';
+            document.getElementById('speed').textContent = coords.speed ? `${(coords.speed * 3.6).toFixed(1)} km/h` : '--';
+            document.getElementById('altitude').textContent = coords.altitude ? `${Math.round(coords.altitude)} meters` : '--';
+            document.getElementById('last-update').textContent = timestamp.toLocaleTimeString();
+            
+            // Update dashboard
+            document.getElementById('current-speed').textContent = coords.speed ? `${(coords.speed * 3.6).toFixed(1)} km/h` : '0 km/h';
+
+            // Update battery level if available
+            if ('getBattery' in navigator) {
+                navigator.getBattery().then(battery => {
+                    document.getElementById('battery-level').textContent = `${Math.round(battery.level * 100)}%`;
+                });
+            }
+
+            // Update map
+            updateMap(coords.latitude, coords.longitude);
+
+            // Save to history
+            saveToHistory(position);
+
+            // Update distance
+            if (locationsHistory.length > 1) {
+                const prevLoc = locationsHistory[locationsHistory.length - 2];
+                const distance = calculateDistance(
+                    prevLoc.coords.latitude,
+                    prevLoc.coords.longitude,
+                    coords.latitude,
+                    coords.longitude
+                );
+                totalDistance += distance;
+                document.getElementById('total-distance').textContent = `${totalDistance.toFixed(2)} km`;
+            }
+
+            // Update tracking time
+            if (trackingStartTime) {
+                const elapsed = Math.floor((new Date() - trackingStartTime) / 1000);
+                const hours = Math.floor(elapsed / 3600);
+                const minutes = Math.floor((elapsed % 3600) / 60);
+                const seconds = elapsed % 60;
+                document.getElementById('total-time').textContent = 
+                    `${hours.toString().padStart(2, '0')}:${minutes.toString().padStart(2, '0')}:${seconds.toString().padStart(2, '0')}`;
+            }
+        }
+
+        function updateMap(lat, lng) {
+            const newLatLng = [lat, lng];
+            
+            if (!marker) {
+                marker = L.marker(newLatLng).addTo(map)
+                    .bindPopup('Your current location')
+                    .openPopup();
+            } else {
+                marker.setLatLng(newLatLng);
+            }
+            
+            map.setView(newLatLng, 15);
+            
+            // Add circle for accuracy
+            if (currentPosition?.coords?.accuracy) {
+                if (window.accuracyCircle) {
+                    map.removeLayer(window.accuracyCircle);
+                }
+                window.accuracyCircle = L.circle(newLatLng, {
+                    radius: currentPosition.coords.accuracy
+                }).addTo(map);
+            }
+        }
+
+        function handleLocationError(error) {
+            console.error('Location error:', error);
+            let message = 'Unknown error';
+            
+            switch(error.code) {
+                case error.PERMISSION_DENIED:
+                    message = 'Location permission denied';
+                    break;
+                case error.POSITION_UNAVAILABLE:
+                    message = 'Location information unavailable';
+                    break;
+                case error.TIMEOUT:
+                    message = 'Location request timed out';
+                    break;
+            }
+            
+            alert(`Location Error: ${message}`);
+            stopTracking();
+        }
+
+        function updateTrackingStatus(isActive) {
+            const statusBadge = document.getElementById('tracking-status');
+            if (isActive) {
+                statusBadge.className = 'status-badge status-active';
+                statusBadge.innerHTML = '<i class="fas fa-circle"></i> Active';
+            } else {
+                statusBadge.className = 'status-badge status-inactive';
+                statusBadge.innerHTML = '<i class="fas fa-circle"></i> Inactive';
+            }
+        }
+
+        function updateDeviceInfo() {
+            document.getElementById('device-id').textContent = 
+                localStorage.getItem('deviceId') || generateDeviceId();
+            document.getElementById('platform').textContent = 
+                navigator.platform || 'Unknown';
+            document.getElementById('connection').textContent = 
+                navigator.connection ? navigator.connection.effectiveType : 'Unknown';
+            document.getElementById('user-agent').textContent = 
+                navigator.userAgent.substring(0, 30) + '...';
+            document.getElementById('screen-size').textContent = 
+                `${window.screen.width} × ${window.screen.height}`;
+            document.getElementById('memory').textContent = 
+                navigator.deviceMemory ? `${navigator.deviceMemory} GB` : 'Unknown';
+        }
+
+        function generateDeviceId() {
+            const id = 'device-' + Math.random().toString(36).substr(2, 9);
+            localStorage.setItem('deviceId', id);
+            return id;
+        }
+
+        function shareLocation() {
+            if (!currentPosition) {
+                alert('No location to share. Start tracking first.');
+                return;
+            }
+
+            const coords = currentPosition.coords;
+            const url = `https://www.google.com/maps?q=${coords.latitude},${coords.longitude}`;
+            const message = `My current location: ${url}`;
+
+            if (navigator.share) {
+                navigator.share({
+                    title: 'My Location',
+                    text: message,
+                    url: url
+                });
+            } else {
+                navigator.clipboard.writeText(message).then(() => {
+                    alert('Location copied to clipboard!');
+                });
+            }
+        }
+
+        function saveToHistory(position) {
+            const locationData = {
+                timestamp: position.timestamp,
+                coords: {
+                    latitude: position.coords.latitude,
+                    longitude: position.coords.longitude,
+                    accuracy: position.coords.accuracy,
+                    speed: position.coords.speed
+                }
+            };
+
+            locationsHistory.push(locationData);
+            document.getElementById('locations-count').textContent = locationsHistory.length;
+
+            // Save to localStorage
+            saveHistoryToStorage();
+
+            // Update recent locations
+            updateRecentLocations();
+        }
+
+        function saveHistoryToStorage() {
+            try {
+                localStorage.setItem('locationHistory', JSON.stringify(locationsHistory));
+                localStorage.setItem('totalDistance', totalDistance.toString());
+            } catch (e) {
+                console.error('Failed to save to localStorage:', e);
+            }
+        }
+
+        function loadSavedData() {
+            try {
+                const savedHistory = localStorage.getItem('locationHistory');
+                if (savedHistory) {
+                    locationsHistory = JSON.parse(savedHistory);
+                    document.getElementById('locations-count').textContent = locationsHistory.length;
+                }
+
+                const savedDistance = localStorage.getItem('totalDistance');
+                if (savedDistance) {
+                    totalDistance = parseFloat(savedDistance);
+                    document.getElementById('total-distance').textContent = `${totalDistance.toFixed(2)} km`;
+                }
+            } catch (e) {
+                console.error('Failed to load saved data:', e);
+            }
+        }
+
+        function updateRecentLocations() {
+            const container = document.getElementById('recent-locations');
+            const recent = locationsHistory.slice(-5).reverse();
+            
+            container.innerHTML = recent.map(loc => `
+                <div class="history-item">
+                    <div>
+                        <div class="history-time">${new Date(loc.timestamp).toLocaleTimeString()}</div>
+                        <div class="history-location">${loc.coords.latitude.toFixed(4)}, ${loc.coords.longitude.toFixed(4)}</div>
+                    </div>
+                    <div>
+                        ${loc.coords.accuracy ? `<span style="color: var(--gray); font-size: 14px;">±${Math.round(loc.coords.accuracy)}m</span>` : ''}
+                    </div>
+                </div>
+            `).join('');
+        }
+
+        function calculateDistance(lat1, lon1, lat2, lon2) {
+            const R = 6371; // Earth's radius in km
+            const dLat = (lat2 - lat1) * Math.PI / 180;
+            const dLon = (lon2 - lon1) * Math.PI / 180;
+            const a = 
+                Math.sin(dLat/2) * Math.sin(dLat/2) +
+                Math.cos(lat1 * Math.PI / 180) * Math.cos(lat2 * Math.PI / 180) * 
+                Math.sin(dLon/2) * Math.sin(dLon/2);
+            const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1-a));
+            return R * c;
+        }
+
+        function updateCurrentTime() {
+            const now = new Date();
+            document.getElementById('current-time').textContent = 
+                now.toLocaleTimeString([], {hour12: false});
+        }
+
+        function saveSettings() {
+            const settings = {
+                trackingInterval: document.getElementById('tracking-interval').value,
+                accuracyLevel: document.getElementById('accuracy-level').value,
+                backgroundTracking: document.getElementById('background-tracking').checked,
+                mapType: document.querySelector('input[name="map-type"]:checked').value
+            };
+
+            localStorage.setItem('trackerSettings', JSON.stringify(settings));
+            alert('Settings saved successfully!');
+        }
+
+        function exportHistory() {
+            const dataStr = JSON.stringify(locationsHistory, null, 2);
+            const dataUri = 'data:application/json;charset=utf-8,'+ encodeURIComponent(dataStr);
+            
+            const exportFileDefaultName = `location-history-${new Date().toISOString().split('T')[0]}.json`;
+            
+            const linkElement = document.createElement('a');
+            linkElement.setAttribute('href', dataUri);
+            linkElement.setAttribute('download', exportFileDefaultName);
+            linkElement.click();
+        }
+
+        function clearHistory() {
+            if (confirm('Are you sure you want to clear all location history?')) {
+                locationsHistory = [];
+                totalDistance = 0;
+                localStorage.removeItem('locationHistory');
+                localStorage.removeItem('totalDistance');
+                
+                document.getElementById('locations-count').textContent = '0';
+                document.getElementById('total-distance').textContent = '0 km';
+                document.getElementById('recent-locations').innerHTML = '';
+                document.getElementById('full-history-list').innerHTML = '';
+                
+                alert('History cleared successfully!');
+            }
+        }
+
+        function filterHistory() {
+            // Implementation for filtering history by date range
+            alert('Filter functionality would be implemented here');
+        }
+
+        function loadMockDevices() {
+            const devices = [
+                { id: 'device-1', status: 'online', lastSeen: '2 minutes ago', location: '40.7128° N, 74.0060° W', battery: '85%' },
+                { id: 'device-2', status: 'online', lastSeen: '5 minutes ago', location: '34.0522° N, 118.2437° W', battery: '42%' },
+                { id: 'device-3', status: 'offline', lastSeen: '1 hour ago', location: '51.5074° N, 0.1278° W', battery: '15%' }
+            ];
+
+            const tbody = document.getElementById('devices-list');
+            tbody.innerHTML = devices.map(device => `
+                <tr>
+                    <td>${device.id}</td>
+                    <td><span class="device-status ${device.status}"><i class="fas fa-circle"></i> ${device.status}</span></td>
+                    <td>${device.lastSeen}</td>
+                    <td>${device.location}</td>
+                    <td><span style="font-weight: 600; color: ${parseInt(device.battery) < 20 ? 'var(--danger)' : 'var(--dark)'}">${device.battery}</span></td>
+                </tr>
+            `).join('');
+        }
+
+        function loadMockHistory() {
+            const container = document.getElementById('full-history-list');
+            const mockHistory = Array.from({length: 10}, (_, i) => ({
+                timestamp: Date.now() - (i * 3600000),
+                coords: {
+                    latitude: 40.7128 + (Math.random() - 0.5) * 0.1,
+                    longitude: -74.0060 + (Math.random() - 0.5) * 0.1,
+                    accuracy: Math.random() * 50
+                }
+            }));
+
+            container.innerHTML = mockHistory.map(loc => `
+                <div class="history-item">
+                    <div>
+                        <div class="history-time">${new Date(loc.timestamp).toLocaleString()}</div>
+                        <div class="history-location">${loc.coords.latitude.toFixed(6)}, ${loc.coords.longitude.toFixed(6)}</div>
+                    </div>
+                    <div>
+                        <span style="color: var(--gray); font-size: 14px;">±${Math.round(loc.coords.accuracy)}m</span>
+                    </div>
+                </div>
+            `).join('');
+        }
+
+        // Service Worker for background tracking (simplified)
+        if ('serviceWorker' in navigator) {
+            navigator.serviceWorker.register('/service-worker.js').catch(err => {
+                console.log('Service Worker registration failed:', err);
             });
         }
-        // Initial call to handle animations on page load
-        document.addEventListener('DOMContentLoaded', () => {
-            handleScrollAnimations();
-           
-            // Add initial welcome message to chat
-            setTimeout(() => {
-                if (!chatWindow.classList.contains('active')) {
-                    addMessage("Welcome! I'm Telugu Chandra Sekhar, a software engineer. Feel free to ask me anything about my work or experience.");
-                }
-            }, 1000);
-        });
-        // Listen for scroll events
-        window.addEventListener('scroll', handleScrollAnimations);
-        // Smooth scrolling for anchor links
-        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
-            anchor.addEventListener('click', function(e) {
-                e.preventDefault();
-               
-                const targetId = this.getAttribute('href');
-                if (targetId === '#') return;
-               
-                const targetElement = document.querySelector(targetId);
-                if (targetElement) {
-                    window.scrollTo({
-                        top: targetElement.offsetTop - 80,
-                        behavior: 'smooth'
-                    });
-                }
-            });
-        });
     </script>
 </body>
 </html>
